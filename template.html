@@ -24,13 +24,12 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 .sec{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin:28px 0 14px;display:flex;align-items:center;gap:10px;}
 .sec::after{content:'';flex:1;height:1px;background:var(--border);}
 .kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.kpi{background:var(--s1);border:1px solid var(--border);border-radius:16px;padding:18px 16px 16px;position:relative;overflow:hidden;}
-.kpi-label{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
-.kpi-value{font-size:36px;font-weight:800;line-height:1;letter-spacing:-.03em;}
+.kpi{background:var(--s1);border:1px solid var(--border);border-radius:16px;padding:16px 16px 14px;position:relative;overflow:hidden;}
+.kpi-label{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.kpi-value{font-size:38px;font-weight:800;line-height:1;letter-spacing:-.03em;}
 .kpi.k-total .kpi-value{color:var(--cyan);}
-.kpi.k-receita .kpi-value{color:var(--emerald);font-size:22px;}
 .kpi.k-conf .kpi-value{color:var(--green);}
-.kpi.k-taxa .kpi-value{color:#fff;}
+.kpi.k-taxa .kpi-value{color:#fff;font-size:28px;}
 .kpi-sub{font-size:10px;color:var(--muted);margin-top:6px;}
 .kpi-bar{position:absolute;bottom:0;left:0;right:0;height:3px;border-radius:0 0 16px 16px;}
 .kpi.k-total .kpi-bar{background:linear-gradient(90deg,var(--cyan),var(--purple));}
@@ -38,30 +37,42 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 .kpi.k-conf .kpi-bar{background:var(--green);}
 .kpi.k-taxa .kpi-bar{background:linear-gradient(90deg,var(--purple),var(--cyan));}
 .kpi.wide{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 20px;}
-.kpi.wide .kpi-value{font-size:42px;}
+.kpi.wide .kpi-value{font-size:44px;}
+/* Receita card especial */
+.kpi.k-receita{grid-column:1/-1;background:linear-gradient(135deg,rgba(16,185,129,.12),rgba(0,217,255,.06));border-color:rgba(16,185,129,.25);}
+.receita-inner{display:flex;flex-direction:column;}
+.receita-symbol{font-size:11px;font-weight:700;color:var(--emerald);letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px;}
+.receita-value{font-size:44px;font-weight:800;line-height:1;letter-spacing:-.03em;color:var(--emerald);}
+.receita-sub{font-size:10px;color:var(--muted);margin-top:6px;}
+/* Charts */
 .chart-card{background:var(--s1);border:1px solid var(--border);border-radius:16px;padding:20px 16px;}
 .chart-card+.chart-card{margin-top:12px;}
 .chart-title{font-size:14px;font-weight:700;color:#fff;}
 .chart-sub{font-size:11px;color:var(--muted);margin-top:2px;}
-.legend{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:12px;}
+.legend{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:10px;margin-bottom:4px;}
 .leg-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);}
 .leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+/* Days */
 .days-scroll-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -16px;padding:0 16px 8px;scrollbar-width:none;}
 .days-scroll-wrap::-webkit-scrollbar{display:none;}
 .days-scroll{display:flex;gap:10px;width:max-content;}
-.day-card{background:var(--s1);border:1px solid var(--border);border-radius:16px;overflow:hidden;width:200px;flex-shrink:0;}
-.day-top{padding:14px 16px 12px;background:var(--s2);border-bottom:1px solid var(--border);}
+.day-card{background:var(--s1);border:1px solid var(--border);border-radius:16px;overflow:hidden;width:190px;flex-shrink:0;}
+.day-card.day-today{border-color:rgba(0,217,255,.35);background:rgba(0,217,255,.04);}
+.day-top{padding:12px 14px 10px;background:var(--s2);border-bottom:1px solid var(--border);}
+.day-card.day-today .day-top{background:rgba(0,217,255,.06);}
 .day-date-row{display:flex;justify-content:space-between;align-items:center;}
-.day-date{font-size:16px;font-weight:800;color:#fff;}
-.day-num{font-size:30px;font-weight:800;color:var(--cyan);line-height:1;}
-.day-body{padding:12px 16px;}
-.ori-item{margin-bottom:8px;}
+.day-date{font-size:15px;font-weight:800;color:#fff;}
+.day-num{font-size:28px;font-weight:800;color:var(--cyan);line-height:1;}
+.day-tag{font-size:9px;font-weight:700;color:var(--cyan);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;opacity:.8;}
+.day-body{padding:10px 14px;}
+.ori-item{margin-bottom:7px;}
 .ori-item:last-child{margin-bottom:0;}
-.ori-name-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
+.ori-name-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;}
 .ori-name{font-size:10px;font-weight:600;}
 .ori-count{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;}
-.bar-track{height:4px;background:rgba(255,255,255,.05);border-radius:2px;overflow:hidden;}
+.bar-track{height:3px;background:rgba(255,255,255,.05);border-radius:2px;overflow:hidden;}
 .bar-fill{height:100%;border-radius:2px;}
+/* Table mobile */
 .tbl-cards{display:flex;flex-direction:column;gap:10px;}
 .tbl-card{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:14px 16px;}
 .tbl-card.grand{background:var(--s2);border-color:var(--border2);padding:16px;}
@@ -76,16 +87,17 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 .tbl-stat-val{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:600;}
 .tbl-stat-val.g{color:var(--green);}
 .tbl-stat-val.e{color:var(--emerald);}
-@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+/* Table desktop */
 @media(min-width:768px){
   .page{max-width:1280px;padding:48px 32px 80px;}
   .header{display:flex;justify-content:space-between;align-items:flex-start;}
   .header h1{font-size:46px;}
   .badge-live{margin-top:0;}
   .kpi-grid{grid-template-columns:repeat(4,1fr);gap:14px;}
+  .kpi.k-receita{grid-column:auto;}
   .kpi.wide{grid-column:auto;display:block;}
   .kpi.wide .kpi-value{font-size:54px;}
-  .kpi.k-receita .kpi-value{font-size:28px;}
+  .receita-value{font-size:36px;}
   .kpi-value{font-size:54px;}
   .chart-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
   .chart-card+.chart-card{margin-top:0;}
@@ -134,8 +146,11 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
       <div class="kpi-bar"></div>
     </div>
     <div class="kpi k-receita">
-      <div class="kpi-label">Receita Total</div>
-      <div class="kpi-value">__RECEITA__</div>
+      <div class="receita-inner">
+        <div class="receita-symbol">Receita Total · R$</div>
+        <div class="receita-value">__RECEITA_NUM__</div>
+        <div class="receita-sub">pagamentos aprovados</div>
+      </div>
       <div class="kpi-bar"></div>
     </div>
     <div class="kpi k-conf">
@@ -146,7 +161,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
     </div>
     <div class="kpi k-taxa">
       <div class="kpi-label">Ticket Médio</div>
-      <div class="kpi-value" id="ticketMedio">—</div>
+      <div class="kpi-value">R$ __TICKET__</div>
       <div class="kpi-sub">por inscrito</div>
       <div class="kpi-bar"></div>
     </div>
@@ -183,11 +198,6 @@ const BY_DAY = __BY_DAY_JSON__;
 const ORIG = __ORIG_JSON__;
 const TOTAL_N = __TOTAL__;
 const CONF_N = __CONF__;
-const RECEITA_STR = '__RECEITA__';
-
-// Ticket médio
-const receitaNum = CONF_N > 0 ? Math.round(TOTAL_N > 0 ? parseInt(RECEITA_STR.replace(/\D/g,'')) / CONF_N : 0) : 0;
-document.getElementById('ticketMedio').textContent = receitaNum > 0 ? 'R$ ' + receitaNum.toLocaleString('pt-BR') : '—';
 
 Chart.defaults.color = '#7882a0';
 Chart.defaults.font.family = 'Bricolage Grotesque';
@@ -197,12 +207,7 @@ new Chart(document.getElementById('cOrigens'), {
   type: 'bar',
   data: {
     labels: CUPONS.map(c => c.replace('Marktech ', 'M. ')),
-    datasets: [{
-      label:'Inscritos',
-      data: CUPONS.map(c => ORIG[c]?.c||0),
-      backgroundColor: COLORS.map(c => c+'cc'),
-      borderRadius:6, borderSkipped:false
-    }]
+    datasets: [{label:'Inscritos', data: CUPONS.map(c => ORIG[c]?.c||0), backgroundColor: COLORS.map(c => c+'cc'), borderRadius:6, borderSkipped:false}]
   },
   options: {responsive:true, maintainAspectRatio:true, plugins:{legend:{display:false}}, scales:{x:{grid:{color:gc},ticks:{font:{size:10}}},y:{grid:{color:gc},ticks:{font:{size:10}}}}}
 });
@@ -212,8 +217,7 @@ new Chart(document.getElementById('cEvolucao'), {
   data: {
     labels: DIAS,
     datasets: CUPONS.map((c,i) => ({
-      label: c,
-      data: DIAS.map(d => BY_DAY[d]?.orig[c]?.c || 0),
+      label: c, data: DIAS.map(d => BY_DAY[d]?.orig[c]?.c || 0),
       borderColor: COLORS[i], backgroundColor: COLORS[i]+'15',
       pointBackgroundColor: COLORS[i], pointRadius:4, pointHoverRadius:6,
       borderWidth:2.5, tension:.35, fill:false
@@ -226,14 +230,19 @@ document.getElementById('lineLegend').innerHTML = CUPONS.map((c,i) =>
   `<div class="leg-item"><span class="leg-dot" style="background:${COLORS[i]}"></span>${c}</div>`
 ).join('');
 
-DIAS.forEach(dia => {
+// Dias em ordem decrescente (mais recente primeiro)
+const DIAS_DESC = [...DIAS].reverse();
+const hoje = DIAS[DIAS.length - 1];
+
+DIAS_DESC.forEach(dia => {
   const d = BY_DAY[dia]; if (!d) return;
+  const isHoje = dia === hoje;
   const maxT = Math.max(...Object.values(d.orig || {}).map(o => o.c || 0), 1);
   const rows = CUPONS.map(c => {
     const o = d.orig?.[c]; if (!o || !o.c) return '';
     return `<div class="ori-item"><div class="ori-name-row"><span class="ori-name" style="color:${CMAP[c]}">${c}</span><span class="ori-count" style="color:${CMAP[c]}">${o.c}</span></div><div class="bar-track"><div class="bar-fill" style="width:${Math.round(o.c/maxT*100)}%;background:${CMAP[c]}"></div></div></div>`;
   }).join('');
-  document.getElementById('dayCards').innerHTML += `<div class="day-card"><div class="day-top"><div class="day-date-row"><div class="day-date">${dia}</div><div class="day-num">${d.confirmados}</div></div></div><div class="day-body">${rows}</div></div>`;
+  document.getElementById('dayCards').innerHTML += `<div class="day-card${isHoje?' day-today':''}"><div class="day-top">${isHoje?'<div class="day-tag">Hoje</div>':''}<div class="day-date-row"><div class="day-date">${dia}</div><div class="day-num">${d.confirmados}</div></div></div><div class="day-body">${rows}</div></div>`;
 });
 
 const tc = document.getElementById('tblCards');
