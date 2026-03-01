@@ -160,7 +160,11 @@ def generate_html(by_day, by_origin, total):
     html = html.replace("__CONF__", str(total["c"]))
     html = html.replace("__PEND__", str(total["p"]))
     html = html.replace("__TAXA__", str(taxa))
+    receita_num = f"{int(rec_conf):,}".replace(",",".")
+    ticket = str(round(rec_conf / total["c"])) if total["c"] else "0"
     html = html.replace("__RECEITA__", fmt_brl(rec_conf))
+    html = html.replace("__RECEITA_NUM__", receita_num)
+    html = html.replace("__TICKET__", ticket)
     html = html.replace("__NDIAS__", str(ndias))
     html = html.replace("__DIAS_JSON__", dias_json)
     html = html.replace("__BY_DAY_JSON__", by_day_json)
