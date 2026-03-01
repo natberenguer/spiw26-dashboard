@@ -15,6 +15,7 @@ CUPONS_MAP = {
 }
 CUPONS = ["Orgânico", "Marktech Meta", "Marktech Google", "EBEstadao", "EmmRIW"]
 COLORS = ["#00d9ff", "#9b5cf6", "#4d9fff", "#ff8c42", "#ff4dab"]
+TICKET_PRICE = 594
 
 
 def get_all_participants():
@@ -34,32 +35,50 @@ def get_all_participants():
     return participants
 
 
-def classify_cupom(p):
-    disc = p.get("order_discount", "") or ""
+def get_all_orders():
+    orders = []
+    page = 1
+    while True:
+        url = f"https://api.sympla.com.br/public/v3/events/{EVENT_ID}/orders"
+        r = requests.get(url, headers={"s-token": TOKEN}, params={"page_size": 200, "page": page})
+        data = r.json()
+        items = data.get("data", [])
+        if not items:
+            break
+        orders.extend(items)
+        if not data.get("pagination", {}).get("has_next", False):
+            break
+        page += 1
+    return orders
+
+
+def classify_cupom(discount_str):
+    disc = discount_str or ""
     for code, name in CUPONS_MAP.items():
         if code in disc:
             return name
     return "Orgânico"
 
 
-def process(participants):
+def process(participants, orders):
     by_day = {}
     by_origin = {c: {"t": 0, "c": 0, "p": 0, "r": 0} for c in CUPONS}
     total = {"t": 0, "c": 0, "p": 0}
 
+    # Approved participants (from participants endpoint)
+    approved_orders = set()
     for p in participants:
         created = p.get("order_date", "") or ""
         try:
-            dt = datetime.strptime(created[:19], "%Y-%m-%d %H:%M:%S")
-            dt = dt.replace(tzinfo=BRT)
+            dt = datetime.strptime(created[:19], "%Y-%m-%d %H:%M:%S").replace(tzinfo=BRT)
             dia = dt.strftime("%d/%m")
         except:
             dia = "??"
 
-        cupom = classify_cupom(p)
-        status = p.get("order_status", "")
-        confirmado = status == "A"
-        valor = float(p.get("ticket_sale_price", 0) or 0)
+        cupom = classify_cupom(p.get("order_discount", ""))
+        valor = float(p.get("ticket_sale_price", TICKET_PRICE) or TICKET_PRICE)
+        order_id = p.get("order_id", "")
+        approved_orders.add(order_id)
 
         if dia not in by_day:
             by_day[dia] = {"total": 0, "confirmados": 0, "pendentes": 0, "orig": {}}
@@ -67,21 +86,45 @@ def process(participants):
             by_day[dia]["orig"][cupom] = {"t": 0, "c": 0, "p": 0}
 
         by_day[dia]["total"] += 1
+        by_day[dia]["confirmados"] += 1
         by_day[dia]["orig"][cupom]["t"] += 1
+        by_day[dia]["orig"][cupom]["c"] += 1
         by_origin[cupom]["t"] += 1
+        by_origin[cupom]["c"] += 1
+        by_origin[cupom]["r"] += valor
         total["t"] += 1
+        total["c"] += 1
 
-        if confirmado:
-            by_day[dia]["confirmados"] += 1
-            by_day[dia]["orig"][cupom]["c"] += 1
-            by_origin[cupom]["c"] += 1
-            by_origin[cupom]["r"] += valor
-            total["c"] += 1
-        else:
-            by_day[dia]["pendentes"] += 1
-            by_day[dia]["orig"][cupom]["p"] += 1
-            by_origin[cupom]["p"] += 1
-            total["p"] += 1
+    # Pending orders (from orders endpoint, not in approved set)
+    for o in orders:
+        status = o.get("status", "") or o.get("order_status", "")
+        order_id = o.get("id", "") or o.get("order_id", "")
+        if status == "A" or str(order_id) in approved_orders or order_id in approved_orders:
+            continue
+
+        created = o.get("created_date", "") or o.get("order_date", "") or ""
+        try:
+            dt = datetime.strptime(created[:19], "%Y-%m-%d %H:%M:%S").replace(tzinfo=BRT)
+            dia = dt.strftime("%d/%m")
+        except:
+            dia = "??"
+
+        cupom = classify_cupom(o.get("discount_code", "") or o.get("order_discount", ""))
+        qty = int(o.get("quantity", 1) or 1)
+
+        if dia not in by_day:
+            by_day[dia] = {"total": 0, "confirmados": 0, "pendentes": 0, "orig": {}}
+        if cupom not in by_day[dia]["orig"]:
+            by_day[dia]["orig"][cupom] = {"t": 0, "c": 0, "p": 0}
+
+        by_day[dia]["total"] += qty
+        by_day[dia]["pendentes"] += qty
+        by_day[dia]["orig"][cupom]["t"] += qty
+        by_day[dia]["orig"][cupom]["p"] += qty
+        by_origin[cupom]["t"] += qty
+        by_origin[cupom]["p"] += qty
+        total["t"] += qty
+        total["p"] += qty
 
     return by_day, by_origin, total
 
@@ -128,16 +171,20 @@ def generate_html(by_day, by_origin, total):
 
 
 if __name__ == "__main__":
-    print("Buscando participantes...")
+    print("Buscando participantes aprovados...")
     participants = get_all_participants()
-    print(f"Total: {len(participants)}")
-    by_day, by_origin, total = process(participants)
-    print(f"Confirmados: {total['c']} | Pendentes: {total['p']}")
-    print("=== BY_DAY SAMPLE ===")
-    dias = sorted(by_day.keys(), key=lambda d: datetime.strptime(d, "%d/%m"))
-    if dias:
-        d = dias[0]
-        print(f"{d}: {json.dumps(by_day[d], ensure_ascii=False)}")
+    print(f"Aprovados: {len(participants)}")
+
+    print("Buscando pedidos (para pendentes)...")
+    orders = get_all_orders()
+    print(f"Total pedidos: {len(orders)}")
+    if orders:
+        print("=== EXEMPLO ORDER ===")
+        print(json.dumps(orders[0], indent=2, ensure_ascii=False))
+
+    by_day, by_origin, total = process(participants, orders)
+    print(f"Total: {total['t']} | Confirmados: {total['c']} | Pendentes: {total['p']}")
+
     html = generate_html(by_day, by_origin, total)
     with open("index.html", "w", encoding="utf-8") as f:
         f.write(html)
