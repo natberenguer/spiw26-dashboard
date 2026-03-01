@@ -10,52 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="apple-touch-icon.png">
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js">
-// PIN LOCK
-const PIN = '2026';
-let pinEntry = '';
-const session = sessionStorage.getItem('spiw_auth');
-if (session === PIN) document.getElementById('pinOverlay').classList.add('hidden');
-
-function pinPress(n) {
-  if (pinEntry.length >= 4) return;
-  pinEntry += n;
-  updateDots();
-  if (pinEntry.length === 4) {
-    setTimeout(() => {
-      if (pinEntry === PIN) {
-        sessionStorage.setItem('spiw_auth', PIN);
-        document.getElementById('pinOverlay').classList.add('hidden');
-      } else {
-        document.querySelectorAll('.pin-dot').forEach(d => d.classList.add('error'));
-        document.getElementById('pinError').textContent = 'Código incorreto';
-        setTimeout(() => {
-          pinEntry = '';
-          updateDots();
-          document.querySelectorAll('.pin-dot').forEach(d => d.classList.remove('error'));
-          document.getElementById('pinError').textContent = '';
-        }, 900);
-      }
-    }, 100);
-  }
-}
-
-function pinDel() {
-  pinEntry = pinEntry.slice(0,-1);
-  updateDots();
-}
-
-function updateDots() {
-  for (let i=0;i<4;i++) {
-    document.getElementById('d'+i).classList.toggle('filled', i < pinEntry.length);
-  }
-}
-
-function forceRefresh(btn) {
-  btn.classList.add('spinning');
-  setTimeout(() => { window.location.href = window.location.href.split('?')[0] + '?t=' + Date.now(); }, 300);
-}
-</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 :root{--bg:#08090f;--s1:#0f1120;--s2:#161929;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.14);--cyan:#00d9ff;--purple:#9b5cf6;--green:#1df78a;--amber:#ffb520;--emerald:#10b981;--text:#eef0fa;--muted:#7882a0;--dim:#2e3650;}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
@@ -219,6 +174,10 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
     <button class="pin-btn" style="visibility:hidden"></button>
     <button class="pin-btn" onclick="pinPress('0')">0</button>
     <button class="pin-btn del" onclick="pinDel()">⌫</button>
+  <button onclick="forceRefresh()" style="margin-top:8px;background:none;border:none;color:var(--muted);font-size:11px;cursor:pointer;display:flex;align-items:center;gap:5px;font-family:inherit;">
+    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+    Forçar atualização
+  </button>
   </div>
 </div>
 
@@ -235,7 +194,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
         <span class="pulse"></span>
         <span>Atualizado __TIMESTAMP__</span>
       </div>
-      <button class="refresh-btn" onclick="forceRefresh(this)">
+      <button class="refresh-btn" id="refreshBtn" onclick="forceRefresh()">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
         Atualizar
       </button>
@@ -365,9 +324,9 @@ tb.innerHTML += `<div class="tbl-row grand-row"><div><span style="font-size:14px
 // PIN LOCK
 const PIN = '2026';
 let pinEntry = '';
-const session = sessionStorage.getItem('spiw_auth');
-if (session === PIN) document.getElementById('pinOverlay').classList.add('hidden');
-
+if (sessionStorage.getItem('spiw_auth') === PIN) {
+  document.getElementById('pinOverlay').style.display = 'none';
+}
 function pinPress(n) {
   if (pinEntry.length >= 4) return;
   pinEntry += n;
@@ -376,7 +335,7 @@ function pinPress(n) {
     setTimeout(() => {
       if (pinEntry === PIN) {
         sessionStorage.setItem('spiw_auth', PIN);
-        document.getElementById('pinOverlay').classList.add('hidden');
+        document.getElementById('pinOverlay').style.display = 'none';
       } else {
         document.querySelectorAll('.pin-dot').forEach(d => d.classList.add('error'));
         document.getElementById('pinError').textContent = 'Código incorreto';
@@ -390,18 +349,24 @@ function pinPress(n) {
     }, 100);
   }
 }
-
-function pinDel() {
-  pinEntry = pinEntry.slice(0,-1);
-  updateDots();
-}
-
+function pinDel() { pinEntry = pinEntry.slice(0,-1); updateDots(); }
 function updateDots() {
-  for (let i=0;i<4;i++) {
-    document.getElementById('d'+i).classList.toggle('filled', i < pinEntry.length);
+  for (let i=0;i<4;i++) document.getElementById('d'+i).classList.toggle('filled', i < pinEntry.length);
+}
+function forceRefresh() {
+  const btn = document.getElementById('refreshBtn');
+  if (btn) { btn.style.opacity = '0.5'; btn.style.pointerEvents = 'none'; }
+  if ('serviceWorker' in navigator) {
+    caches.keys().then(keys => Promise.all(keys.map(k => caches.delete(k)))).then(() => {
+      window.location.reload(true);
+    });
+  } else {
+    window.location.reload(true);
   }
 }
-
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js');
+}
 </script>
 </body>
 </html>
