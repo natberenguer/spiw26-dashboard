@@ -67,6 +67,7 @@ def process(participants):
             by_day[dia]["orig"][cupom] = {"t": 0, "c": 0, "p": 0}
 
         by_day[dia]["total"] += 1
+        by_day[dia]["orig"][cupom]["t"] += 1
         by_origin[cupom]["t"] += 1
         total["t"] += 1
 
@@ -132,6 +133,11 @@ if __name__ == "__main__":
     print(f"Total: {len(participants)}")
     by_day, by_origin, total = process(participants)
     print(f"Confirmados: {total['c']} | Pendentes: {total['p']}")
+    print("=== BY_DAY SAMPLE ===")
+    dias = sorted(by_day.keys())
+    if dias:
+        d = dias[0]
+        print(f"{d}: {json.dumps(by_day[d], ensure_ascii=False)}")
     html = generate_html(by_day, by_origin, total)
     with open("index.html", "w", encoding="utf-8") as f:
         f.write(html)
