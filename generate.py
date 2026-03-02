@@ -80,6 +80,10 @@ def process(participants, orders):
         order_id = p.get("order_id", "")
         approved_orders.add(order_id)
 
+        # Ignora ingressos gratuitos/teste
+        if valor == 0:
+            continue
+
         if dia not in by_day:
             by_day[dia] = {"total": 0, "confirmados": 0, "pendentes": 0, "orig": {}}
         if cupom not in by_day[dia]["orig"]:
