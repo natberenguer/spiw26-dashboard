@@ -188,6 +188,16 @@ if __name__ == "__main__":
 
     by_day, by_origin, total = process(participants, orders)
     print(f"Total: {total['t']} | Confirmados: {total['c']} | Pendentes: {total['p']}")
+    # Debug ticket types
+    from collections import Counter
+    tickets = Counter()
+    for p in participants:
+        name = p.get('ticket_name', 'desconhecido')
+        price = p.get('ticket_sale_price', 0)
+        tickets[f"{name} (R$ {price})"] += 1
+    print("=== TIPOS DE INGRESSO ===")
+    for t, n in sorted(tickets.items()):
+        print(f"  {n}x {t}")
 
     html = generate_html(by_day, by_origin, total)
     with open("index.html", "w", encoding="utf-8") as f:
