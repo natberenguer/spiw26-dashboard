@@ -202,6 +202,11 @@ if __name__ == "__main__":
     print("=== TIPOS DE INGRESSO ===")
     for t, n in sorted(tickets.items()):
         print(f"  {n}x {t}")
+    print("=== GRATUITOS (primeiros 10) ===")
+    gratuitos = [p for p in participants if float(p.get('ticket_sale_price', 1) or 1) == 0]
+    print(f"Total gratuitos: {len(gratuitos)}")
+    for p in gratuitos[:10]:
+        print(f"  order_discount={p.get('order_discount')} | ticket_name={p.get('ticket_name')} | discount_code={p.get('discount_code')}")
 
     html = generate_html(by_day, by_origin, total)
     with open("index.html", "w", encoding="utf-8") as f:
