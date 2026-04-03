@@ -35,6 +35,14 @@ def get_all_participants():
     return participants
 
 
+def get_all_coupons():
+    url = f"https://api.sympla.com.br/public/v3/events/{EVENT_ID}/discount_coupons"
+    r = requests.get(url, headers={"s-token": TOKEN})
+    print(f"Coupons status: {r.status_code}")
+    print(r.text[:3000])
+    return r
+
+
 def get_all_orders():
     orders = []
     page = 1
@@ -182,6 +190,9 @@ if __name__ == "__main__":
     print("Buscando participantes aprovados...")
     participants = get_all_participants()
     print(f"Aprovados: {len(participants)}")
+
+    print("=== TESTE ENDPOINT CUPONS ===")
+    get_all_coupons()
 
     print("Buscando pedidos (para pendentes)...")
     orders = get_all_orders()
