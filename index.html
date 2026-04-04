@@ -16,7 +16,7 @@
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 body{background:var(--bg);color:var(--text);font-family:'Bricolage Grotesque',sans-serif;min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
 body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 80% 40% at 20% 0%,rgba(0,217,255,.055) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 80% 100%,rgba(155,92,246,.06) 0%,transparent 60%);}
-.page{position:relative;z-index:1;max-width:480px;margin:0 auto;padding:24px 16px 64px;}
+.page{position:relative;z-index:1;max-width:480px;margin:0 auto;padding:24px 16px 80px;}
 .header{margin-bottom:24px;}
 .eyebrow{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--cyan);opacity:.8;margin-bottom:8px;}
 .header h1{font-size:26px;font-weight:800;line-height:1.1;letter-spacing:-.02em;color:#fff;}
@@ -28,9 +28,16 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 .refresh-btn{background:none;border:1px solid var(--border);border-radius:999px;color:var(--muted);font-size:11px;font-weight:600;padding:5px 12px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:all .2s;margin-top:10px;}
 .refresh-btn:active{transform:scale(.95);color:var(--cyan);border-color:var(--cyan);}
 .refresh-btn svg{transition:transform .5s;}
-.refresh-btn.spinning svg{animation:spin .6s linear;}
 @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(29,247,138,.5)}50%{box-shadow:0 0 0 5px rgba(29,247,138,0)}}
+
+/* TABS */
+.tabs{display:flex;gap:4px;background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:4px;margin-bottom:24px;}
+.tab-btn{flex:1;padding:9px 4px;border:none;background:none;color:var(--muted);font-family:'Bricolage Grotesque',sans-serif;font-size:12px;font-weight:700;letter-spacing:.04em;border-radius:10px;cursor:pointer;transition:all .2s;text-align:center;}
+.tab-btn.active{background:var(--s2);color:#fff;box-shadow:0 1px 8px rgba(0,0,0,.3);}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
 .sec{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin:28px 0 14px;display:flex;align-items:center;gap:10px;}
 .sec::after{content:'';flex:1;height:1px;background:var(--border);}
 .kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
@@ -48,13 +55,11 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 .kpi.k-taxa .kpi-bar{background:linear-gradient(90deg,var(--purple),var(--cyan));}
 .kpi.wide{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 20px;}
 .kpi.wide .kpi-value{font-size:44px;}
-/* Receita card especial */
 .kpi.k-receita{grid-column:1/-1;background:linear-gradient(135deg,rgba(16,185,129,.12),rgba(0,217,255,.06));border-color:rgba(16,185,129,.25);}
 .receita-inner{display:flex;flex-direction:column;}
 .receita-symbol{font-size:11px;font-weight:700;color:var(--emerald);letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px;}
 .receita-value{font-size:44px;font-weight:800;line-height:1;letter-spacing:-.03em;color:var(--emerald);}
 .receita-sub{font-size:10px;color:var(--muted);margin-top:6px;}
-/* Charts */
 .chart-card{background:var(--s1);border:1px solid var(--border);border-radius:16px;padding:20px 16px;}
 .chart-card+.chart-card{margin-top:12px;}
 .chart-title{font-size:14px;font-weight:700;color:#fff;}
@@ -62,7 +67,6 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 .legend{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:10px;margin-bottom:4px;}
 .leg-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);}
 .leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
-/* Days */
 .days-scroll-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -16px;padding:0 16px 8px;scrollbar-width:none;}
 .days-scroll-wrap::-webkit-scrollbar{display:none;}
 .days-scroll{display:flex;gap:10px;width:max-content;}
@@ -82,7 +86,6 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 .ori-count{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;}
 .bar-track{height:3px;background:rgba(255,255,255,.05);border-radius:2px;overflow:hidden;}
 .bar-fill{height:100%;border-radius:2px;}
-/* Table mobile */
 .tbl-cards{display:flex;flex-direction:column;gap:10px;}
 .tbl-card{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:14px 16px;}
 .tbl-card.grand{background:var(--s2);border-color:var(--border2);padding:16px;}
@@ -97,7 +100,39 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 .tbl-stat-val{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:600;}
 .tbl-stat-val.g{color:var(--green);}
 .tbl-stat-val.e{color:var(--emerald);}
-/* Table desktop */
+
+/* CORTESIAS */
+.cort-cat{background:var(--s1);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:10px;}
+.cort-cat-header{padding:14px 16px;cursor:pointer;display:flex;align-items:center;gap:12px;-webkit-tap-highlight-color:transparent;}
+.cort-cat-header:active{background:rgba(255,255,255,.03);}
+.cort-color-bar{width:4px;height:40px;border-radius:2px;flex-shrink:0;}
+.cort-cat-info{flex:1;min-width:0;}
+.cort-cat-name{font-size:14px;font-weight:700;color:#fff;margin-bottom:6px;}
+.cort-progress-wrap{display:flex;align-items:center;gap:8px;}
+.cort-progress-track{flex:1;height:5px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;}
+.cort-progress-fill{height:100%;border-radius:3px;transition:width .6s ease;}
+.cort-pct{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;color:var(--muted);flex-shrink:0;width:36px;text-align:right;}
+.cort-nums{display:flex;flex-direction:column;align-items:flex-end;gap:2px;flex-shrink:0;}
+.cort-used{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;line-height:1;}
+.cort-avail{font-size:10px;color:var(--muted);}
+.cort-arrow{font-size:14px;color:var(--muted);flex-shrink:0;transition:transform .2s;}
+.cort-cat.open .cort-arrow{transform:rotate(90deg);}
+.cort-cupons{display:none;border-top:1px solid var(--border);padding:0 16px;}
+.cort-cat.open .cort-cupons{display:block;}
+.cort-cupom-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.cort-cupom-row:last-child{border-bottom:none;}
+.cort-cupom-name{font-size:12px;font-weight:600;color:var(--text);font-family:'JetBrains Mono',monospace;}
+.cort-cupom-count{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--cyan);}
+.cort-empty{font-size:12px;color:var(--muted);padding:12px 0;text-align:center;}
+
+/* PARCEIROS */
+.parc-card{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;gap:14px;}
+.parc-pct-badge{background:rgba(255,183,32,.1);border:1px solid rgba(255,183,32,.25);color:var(--amber);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;padding:4px 9px;border-radius:8px;flex-shrink:0;}
+.parc-name{font-size:13px;font-weight:700;color:#fff;flex:1;}
+.parc-count{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:var(--cyan);}
+.parc-empty{text-align:center;color:var(--muted);font-size:13px;padding:40px 0;}
+
+/* Desktop */
 @media(min-width:768px){
   .page{max-width:1280px;padding:48px 32px 80px;}
   .header{display:flex;justify-content:space-between;align-items:flex-start;}
@@ -116,6 +151,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
   .day-card{width:auto;}
   .tbl-cards{display:none;}
   .tbl-desktop{display:block !important;}
+  .tabs{max-width:400px;}
 }
 .tbl-desktop{display:none;background:var(--s1);border:1px solid var(--border);border-radius:18px;overflow:hidden;}
 .tbl-head{display:grid;grid-template-columns:2fr repeat(3,1fr);padding:13px 24px;background:var(--s2);border-bottom:1px solid var(--border);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
@@ -131,9 +167,8 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 .dnum-e{color:var(--emerald);font-size:13px;}
 .dtc{display:inline-block;padding:2px 9px;border-radius:999px;font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace;background:rgba(29,247,138,.1);color:var(--green);border:1px solid rgba(29,247,138,.18);}
 
-/* PIN LOCK */
+/* PIN */
 .pin-overlay{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:24px;}
-.pin-overlay.hidden{display:none;}
 .pin-logo{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--cyan);opacity:.8;}
 .pin-title{font-size:20px;font-weight:800;color:#fff;text-align:center;line-height:1.3;}
 .pin-dots{display:flex;gap:16px;margin:4px 0;}
@@ -145,8 +180,6 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 .pin-btn{background:var(--s1);border:1px solid var(--border);border-radius:18px;height:76px;font-size:26px;font-weight:700;color:#fff;cursor:pointer;transition:all .1s;-webkit-tap-highlight-color:transparent;display:flex;align-items:center;justify-content:center;user-select:none;}
 .pin-btn:active{background:var(--s2);transform:scale(.93);border-color:var(--border2);}
 .pin-btn.del{font-size:16px;color:var(--muted);}
-.pin-btn.zero{grid-column:2;}
-
 </style>
 </head>
 <body>
@@ -174,11 +207,11 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
     <button class="pin-btn" style="visibility:hidden"></button>
     <button class="pin-btn" onclick="pinPress('0')">0</button>
     <button class="pin-btn del" onclick="pinDel()">⌫</button>
-  <button onclick="forceRefresh()" style="margin-top:8px;background:none;border:none;color:var(--muted);font-size:11px;cursor:pointer;display:flex;align-items:center;gap:5px;font-family:inherit;">
+  </div>
+  <button onclick="forceRefresh()" style="background:none;border:none;color:var(--muted);font-size:11px;cursor:pointer;display:flex;align-items:center;gap:5px;font-family:inherit;">
     <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
     Forçar atualização
   </button>
-  </div>
 </div>
 
 <div class="page">
@@ -192,7 +225,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
       </div>
       <div class="badge-live">
         <span class="pulse"></span>
-        <span>Atualizado 03/04/2026 · 22h14</span>
+        <span>Atualizado 03/04/2026 · 22h19</span>
       </div>
       <button class="refresh-btn" id="refreshBtn" onclick="forceRefresh()">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
@@ -200,57 +233,95 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
       </button>
     </div>
   </div>
-  <div class="sec">Totais gerais</div>
-  <div class="kpi-grid">
-    <div class="kpi k-total wide">
-      <div><div class="kpi-label">Total de Inscritos</div><div class="kpi-value">1181</div></div>
-      <div><div class="kpi-sub">40 dias de vendas</div></div>
-      <div class="kpi-bar"></div>
-    </div>
-    <div class="kpi k-receita">
-      <div class="receita-inner">
-        <div class="receita-symbol">Receita Total · R$</div>
-        <div class="receita-value">755.815</div>
-        <div class="receita-sub">pagamentos aprovados</div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('vendas',this)">💳 Vendas</button>
+    <button class="tab-btn" onclick="switchTab('cortesias',this)">🎟️ Cortesias</button>
+    <button class="tab-btn" onclick="switchTab('parceiros',this)">🤝 Parceiros</button>
+  </div>
+
+  <!-- ABA VENDAS -->
+  <div class="tab-panel active" id="tab-vendas">
+    <div class="sec">Totais gerais</div>
+    <div class="kpi-grid">
+      <div class="kpi k-total wide">
+        <div><div class="kpi-label">Total de Inscritos</div><div class="kpi-value">1181</div></div>
+        <div><div class="kpi-sub">40 dias de vendas</div></div>
+        <div class="kpi-bar"></div>
       </div>
-      <div class="kpi-bar"></div>
+      <div class="kpi k-receita">
+        <div class="receita-inner">
+          <div class="receita-symbol">Receita Total · R$</div>
+          <div class="receita-value">755.815</div>
+          <div class="receita-sub">pagamentos aprovados</div>
+        </div>
+        <div class="kpi-bar"></div>
+      </div>
+      <div class="kpi k-conf">
+        <div class="kpi-label">Confirmados</div>
+        <div class="kpi-value">1181</div>
+        <div class="kpi-sub">pag. aprovado</div>
+        <div class="kpi-bar"></div>
+      </div>
+      <div class="kpi k-taxa">
+        <div class="kpi-label">Ticket Médio</div>
+        <div class="kpi-value">R$ 640</div>
+        <div class="kpi-sub">por inscrito</div>
+        <div class="kpi-bar"></div>
+      </div>
     </div>
-    <div class="kpi k-conf">
-      <div class="kpi-label">Confirmados</div>
-      <div class="kpi-value">1181</div>
-      <div class="kpi-sub">pag. aprovado</div>
-      <div class="kpi-bar"></div>
+    <div class="sec">Gráficos</div>
+    <div class="chart-row">
+      <div class="chart-card">
+        <div class="chart-title">Inscritos por Origem</div>
+        <div class="chart-sub" style="margin-bottom:12px">Total confirmado</div>
+        <canvas id="cOrigens" height="200"></canvas>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Evolução Diária</div>
+        <div class="chart-sub">Linha do tempo</div>
+        <div class="legend" id="lineLegend"></div>
+        <canvas id="cEvolucao" height="160"></canvas>
+      </div>
     </div>
-    <div class="kpi k-taxa">
-      <div class="kpi-label">Ticket Médio</div>
-      <div class="kpi-value">R$ 640</div>
-      <div class="kpi-sub">por inscrito</div>
-      <div class="kpi-bar"></div>
+    <div class="sec">Por dia</div>
+    <div class="days-scroll-wrap"><div class="days-scroll" id="dayCards"></div></div>
+    <div class="sec">Total por origem</div>
+    <div class="tbl-cards" id="tblCards"></div>
+    <div class="tbl-desktop" id="tblDesktop">
+      <div class="tbl-head"><div>Origem</div><div>Inscritos</div><div>Receita</div><div>% do total</div></div>
+      <div id="tblBody"></div>
     </div>
   </div>
-  <div class="sec">Gráficos</div>
-  <div class="chart-row">
-    <div class="chart-card">
-      <div class="chart-title">Inscritos por Origem</div>
-      <div class="chart-sub" style="margin-bottom:12px">Total confirmado</div>
-      <canvas id="cOrigens" height="200"></canvas>
+
+  <!-- ABA CORTESIAS -->
+  <div class="tab-panel" id="tab-cortesias">
+    <div class="sec">Ingressos gratuitos</div>
+    <div class="kpi-grid" style="margin-bottom:20px;">
+      <div class="kpi k-total wide">
+        <div><div class="kpi-label">Total Utilizados</div><div class="kpi-value" id="cortTotalUsed">0</div></div>
+        <div><div class="kpi-sub" id="cortTotalAvail">de 0 disponíveis</div></div>
+        <div class="kpi-bar"></div>
+      </div>
     </div>
-    <div class="chart-card">
-      <div class="chart-title">Evolução Diária</div>
-      <div class="chart-sub">Linha do tempo</div>
-      <div class="legend" id="lineLegend"></div>
-      <canvas id="cEvolucao" height="160"></canvas>
-    </div>
+    <div id="cortList"></div>
   </div>
-  <div class="sec">Por dia</div>
-  <div class="days-scroll-wrap"><div class="days-scroll" id="dayCards"></div></div>
-  <div class="sec">Total por origem</div>
-  <div class="tbl-cards" id="tblCards"></div>
-  <div class="tbl-desktop" id="tblDesktop">
-    <div class="tbl-head"><div>Origem</div><div>Inscritos</div><div>Receita</div><div>% do total</div></div>
-    <div id="tblBody"></div>
+
+  <!-- ABA PARCEIROS -->
+  <div class="tab-panel" id="tab-parceiros">
+    <div class="sec">Cupons com desconto</div>
+    <div class="kpi-grid" style="margin-bottom:20px;">
+      <div class="kpi k-total wide">
+        <div><div class="kpi-label">Total Utilizados</div><div class="kpi-value" id="parcTotal">0</div></div>
+        <div><div class="kpi-sub">cupons de parceiros</div></div>
+        <div class="kpi-bar"></div>
+      </div>
+    </div>
+    <div id="parcList"></div>
   </div>
 </div>
+
 <script>
 const CUPONS = ["Orgânico", "Marktech Meta", "Marktech Google", "EBEstadao", "EmmRIW"];
 const COLORS = ["#00d9ff", "#9b5cf6", "#4d9fff", "#ff8c42", "#ff4dab"];
@@ -260,6 +331,17 @@ const BY_DAY = {"05/03": {"total": 11, "confirmados": 11, "pendentes": 0, "orig"
 const ORIG = {"Orgânico": {"t": 629, "c": 629, "p": 0, "r": "R$ 411.098"}, "Marktech Meta": {"t": 194, "c": 194, "p": 0, "r": "R$ 122.661"}, "Marktech Google": {"t": 71, "c": 71, "p": 0, "r": "R$ 45.837"}, "EBEstadao": {"t": 227, "c": 227, "p": 0, "r": "R$ 139.194"}, "EmmRIW": {"t": 60, "c": 60, "p": 0, "r": "R$ 37.026"}};
 const TOTAL_N = 1181;
 const CONF_N = 1181;
+const CORTESIAS = [{"cat": "Curadores", "disponivel": 2650, "utilizados": 0, "pct": 0.0, "cupons": []}, {"cat": "FAAP", "disponivel": 4000, "utilizados": 0, "pct": 0.0, "cupons": []}, {"cat": "Esferas Públicas", "disponivel": 3000, "utilizados": 0, "pct": 0.0, "cupons": []}, {"cat": "Open Innovation", "disponivel": 3000, "utilizados": 0, "pct": 0.0, "cupons": []}, {"cat": "Estadão", "disponivel": 2020, "utilizados": 0, "pct": 0.0, "cupons": []}, {"cat": "Patrocinadores Privados", "disponivel": 2000, "utilizados": 0, "pct": 0.0, "cupons": []}, {"cat": "Expositores", "disponivel": 1000, "utilizados": 0, "pct": 0.0, "cupons": []}, {"cat": "Parceiros de Mídia", "disponivel": 500, "utilizados": 0, "pct": 0.0, "cupons": []}, {"cat": "Universidades / Estratégicos", "disponivel": 3500, "utilizados": 3, "pct": 0.1, "cupons": [{"nome": "ABF", "utilizados": 3}]}, {"cat": "Rouanet", "disponivel": 1000, "utilizados": 0, "pct": 0.0, "cupons": []}, {"cat": "Parceiro", "disponivel": 220, "utilizados": 0, "pct": 0.0, "cupons": []}, {"cat": "Experiência", "disponivel": 20, "utilizados": 0, "pct": 0.0, "cupons": []}, {"cat": "Área Internacional", "disponivel": 50, "utilizados": 0, "pct": 0.0, "cupons": []}];
+const PARCEIROS = [{"cupom": "OXYGEN30", "pct": 30.0, "count": 6}, {"cupom": "techtrends30", "pct": 30.0, "count": 1}];
+const CAT_COLORS = ["#00d9ff", "#9b5cf6", "#4d9fff", "#ff8c42", "#ff4dab", "#00ff9d", "#ffd700", "#ff6b6b", "#c084fc", "#34d399", "#f97316", "#60a5fa", "#e879f9", "#a3e635", "#94a3b8"];
+
+// TABS
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+}
 
 Chart.defaults.color = '#7882a0';
 Chart.defaults.font.family = 'Bricolage Grotesque';
@@ -292,10 +374,8 @@ document.getElementById('lineLegend').innerHTML = CUPONS.map((c,i) =>
   `<div class="leg-item"><span class="leg-dot" style="background:${COLORS[i]}"></span>${c}</div>`
 ).join('');
 
-// Dias em ordem decrescente (mais recente primeiro)
 const DIAS_DESC = [...DIAS].reverse();
 const hoje = DIAS[DIAS.length - 1];
-
 DIAS_DESC.forEach(dia => {
   const d = BY_DAY[dia]; if (!d) return;
   const isHoje = dia === hoje;
@@ -321,7 +401,62 @@ CUPONS.forEach((c,i) => {
 });
 tb.innerHTML += `<div class="tbl-row grand-row"><div><span style="font-size:14px;font-weight:800;color:#fff">Total Geral</span></div><div><span class="dnum-big">${CONF_N}</span></div><div><span class="dnum dnum-e" style="font-size:16px">R$ 755.816</span></div><div></div></div>`;
 
-// PIN LOCK
+// CORTESIAS
+let totalUsed = 0, totalAvail = 0;
+CORTESIAS.forEach((cat, i) => {
+  totalUsed += cat.utilizados;
+  totalAvail += cat.disponivel;
+  const color = CAT_COLORS[i % CAT_COLORS.length];
+  const pctW = cat.disponivel > 0 ? Math.min(cat.pct, 100) : 0;
+  const cuponsHtml = cat.cupons.length > 0
+    ? cat.cupons.map(c => `<div class="cort-cupom-row"><span class="cort-cupom-name">${c.nome}</span><span class="cort-cupom-count">${c.utilizados}</span></div>`).join('')
+    : `<div class="cort-empty">Nenhum utilizado ainda</div>`;
+  const availTxt = cat.disponivel > 0 ? `de ${cat.disponivel.toLocaleString('pt-BR')}` : 'a definir';
+  document.getElementById('cortList').innerHTML += `
+    <div class="cort-cat" id="cort-${i}">
+      <div class="cort-cat-header" onclick="toggleCort(${i})">
+        <div class="cort-color-bar" style="background:${color}"></div>
+        <div class="cort-cat-info">
+          <div class="cort-cat-name">${cat.cat}</div>
+          <div class="cort-progress-wrap">
+            <div class="cort-progress-track"><div class="cort-progress-fill" style="width:${pctW}%;background:${color}"></div></div>
+            <div class="cort-pct">${cat.disponivel > 0 ? cat.pct+'%' : '—'}</div>
+          </div>
+        </div>
+        <div class="cort-nums">
+          <div class="cort-used" style="color:${color}">${cat.utilizados}</div>
+          <div class="cort-avail">${availTxt}</div>
+        </div>
+        <div class="cort-arrow">›</div>
+      </div>
+      <div class="cort-cupons">${cuponsHtml}</div>
+    </div>`;
+});
+document.getElementById('cortTotalUsed').textContent = totalUsed;
+document.getElementById('cortTotalAvail').textContent = `de ${totalAvail.toLocaleString('pt-BR')} disponíveis`;
+
+function toggleCort(i) {
+  document.getElementById('cort-'+i).classList.toggle('open');
+}
+
+// PARCEIROS
+let parcTotal = 0;
+if (PARCEIROS.length === 0) {
+  document.getElementById('parcList').innerHTML = '<div class="parc-empty">Nenhum cupom de parceiro utilizado ainda</div>';
+} else {
+  PARCEIROS.forEach(p => {
+    parcTotal += p.count;
+    document.getElementById('parcList').innerHTML += `
+      <div class="parc-card">
+        <div class="parc-pct-badge">${p.pct}% off</div>
+        <div class="parc-name">${p.cupom}</div>
+        <div class="parc-count">${p.count}</div>
+      </div>`;
+  });
+}
+document.getElementById('parcTotal').textContent = parcTotal;
+
+// PIN
 const PIN = '2026';
 let pinEntry = '';
 if (sessionStorage.getItem('spiw_auth') === PIN) {
@@ -355,18 +490,14 @@ function updateDots() {
 }
 function forceRefresh() {
   const btn = document.getElementById('refreshBtn');
-  if (btn) { btn.style.opacity = '0.5'; btn.style.pointerEvents = 'none'; }
+  if (btn) { btn.style.opacity='0.5'; btn.style.pointerEvents='none'; }
   if ('serviceWorker' in navigator) {
-    caches.keys().then(keys => Promise.all(keys.map(k => caches.delete(k)))).then(() => {
-      window.location.reload(true);
-    });
+    caches.keys().then(keys => Promise.all(keys.map(k => caches.delete(k)))).then(() => window.location.reload(true));
   } else {
     window.location.reload(true);
   }
 }
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js');
-}
+if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js'); }
 </script>
 </body>
 </html>
