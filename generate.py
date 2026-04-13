@@ -344,6 +344,11 @@ if __name__ == "__main__":
     participants = get_all_participants()
     print(f"Aprovados: {len(participants)}")
 
+    print("=== EXEMPLO PARTICIPANTE COMPLETO ===")
+    for p in participants[:3]:
+        print(json.dumps(p, indent=2, ensure_ascii=False))
+        print("---")
+
     print("Buscando pedidos...")
     orders = get_all_orders()
     print(f"Total pedidos: {len(orders)}")
