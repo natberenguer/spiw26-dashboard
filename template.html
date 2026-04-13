@@ -372,10 +372,19 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
     <div id="convEmpresas"></div>
     <div class="sec">Top 10 Cargos</div>
     <div id="convCargos"></div>
-    <div class="sec">Distribuição de Gênero</div>
-    <div id="convGeneros" class="tbl-cards"></div>
-    <div class="sec">Faixa Etária</div>
-    <div id="convFaixas" class="tbl-cards"></div>
+    <div class="sec">Distribuição de Gênero & Faixa Etária</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:4px;">
+      <div class="chart-card" style="padding:14px 12px;">
+        <div class="chart-title" style="font-size:12px;margin-bottom:10px;">Gênero</div>
+        <canvas id="cGenero" height="180"></canvas>
+        <div id="convGeneroLegend" style="margin-top:10px;"></div>
+      </div>
+      <div class="chart-card" style="padding:14px 12px;">
+        <div class="chart-title" style="font-size:12px;margin-bottom:10px;">Faixa Etária</div>
+        <canvas id="cFaixa" height="180"></canvas>
+        <div id="convFaixaLegend" style="margin-top:10px;"></div>
+      </div>
+    </div>
     <div class="sec">Top Cidades</div>
     <div id="convCidades"></div>
   </div>
@@ -555,9 +564,41 @@ function convBadges(list, containerId) {
 
 convBar(CONVITE.top_empresas, 'convEmpresas', 'var(--cyan)');
 convBar(CONVITE.top_cargos, 'convCargos', 'var(--purple)');
-convBadges(CONVITE.generos, 'convGeneros');
-convBadges(CONVITE.faixas, 'convFaixas');
 convBar(CONVITE.top_cidades, 'convCidades', 'var(--amber)');
+
+// Pizza gênero
+const genLabels = CONVITE.generos.map(g => g.nome);
+const genData   = CONVITE.generos.map(g => g.n);
+const genColors = ['#9b5cf6','#00d9ff','#ff4dab','#34d399','#ffb520'];
+new Chart(document.getElementById('cGenero'), {
+  type: 'doughnut',
+  data: { labels: genLabels, datasets: [{ data: genData, backgroundColor: genColors, borderWidth: 0, hoverOffset: 4 }] },
+  options: { responsive: true, maintainAspectRatio: true, cutout: '60%', plugins: { legend: { display: false } } }
+});
+const genTotal = genData.reduce((a,b)=>a+b,0);
+document.getElementById('convGeneroLegend').innerHTML = genLabels.map((l,i) =>
+  `<div style="display:flex;align-items:center;gap:5px;margin-bottom:4px;font-size:10px;color:var(--muted);">
+    <span style="width:8px;height:8px;border-radius:50%;background:${genColors[i]};flex-shrink:0;"></span>
+    <span style="flex:1;">${l}</span>
+    <span style="font-family:'JetBrains Mono',monospace;font-weight:600;color:#fff;">${Math.round(genData[i]/genTotal*100)}%</span>
+  </div>`).join('');
+
+// Pizza faixa etária
+const faixaLabels = CONVITE.faixas.map(f => f.nome.replace(' anos',''));
+const faixaData   = CONVITE.faixas.map(f => f.n);
+const faixaColors = ['#00d9ff','#9b5cf6','#ff8c42','#1df78a','#ff4dab','#ffd700','#60a5fa'];
+new Chart(document.getElementById('cFaixa'), {
+  type: 'doughnut',
+  data: { labels: faixaLabels, datasets: [{ data: faixaData, backgroundColor: faixaColors, borderWidth: 0, hoverOffset: 4 }] },
+  options: { responsive: true, maintainAspectRatio: true, cutout: '60%', plugins: { legend: { display: false } } }
+});
+const faixaTotal = faixaData.reduce((a,b)=>a+b,0);
+document.getElementById('convFaixaLegend').innerHTML = faixaLabels.map((l,i) =>
+  `<div style="display:flex;align-items:center;gap:5px;margin-bottom:4px;font-size:10px;color:var(--muted);">
+    <span style="width:8px;height:8px;border-radius:50%;background:${faixaColors[i]};flex-shrink:0;"></span>
+    <span style="flex:1;">${l}</span>
+    <span style="font-family:'JetBrains Mono',monospace;font-weight:600;color:#fff;">${Math.round(faixaData[i]/faixaTotal*100)}%</span>
+  </div>`).join('');
 
 // PIN
 const PIN = '2026';
