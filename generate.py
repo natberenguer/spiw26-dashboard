@@ -2,12 +2,12 @@ import requests
 import json
 import os
 import re
+import time
 from datetime import datetime, timezone, timedelta
 from collections import defaultdict, Counter
 
 TOKEN = os.environ.get("SYMPLA_TOKEN")
-EVENT_ID = "3315673"
-EVENT_POPTECH_ID = "3369150"
+EVENT_IDS = ["3315673", "3369150"]
 BRT = timezone(timedelta(hours=-3))
 
 CUPONS_MAP = {
@@ -16,10 +16,14 @@ CUPONS_MAP = {
     "EBEstadao":      "EBEstadao",
     "EmmRIW":         "EmmRIW",
 }
-CUPONS  = ["Orgânico", "Marktech Meta", "Marktech Google", "EBEstadao", "EmmRIW"]
-COLORS  = ["#00d9ff", "#9b5cf6", "#4d9fff", "#ff8c42", "#ff4dab"]
+CUPONS = ["Orgânico", "Marktech Meta", "Marktech Google", "EBEstadao", "EmmRIW"]
+COLORS = ["#00d9ff", "#9b5cf6", "#4d9fff", "#ff8c42", "#ff4dab"]
 
 CORTESIA_CAT = {
+    # Palestrantes — prioridade máxima
+    "PALESTRANTE": "Palestrantes", "PALESTR": "Palestrantes",
+
+    # Curadores
     "SMARTCITIES": "Curadores", "INDUSTRIA": "Curadores", "REALESTATE": "Curadores",
     "EGOV": "Curadores", "NOVAMOBILIDADE": "Curadores", "AGROTECH": "Curadores",
     "RETAILTALKS": "Curadores", "RETAIL": "Curadores", "DHO": "Curadores",
@@ -35,16 +39,19 @@ CORTESIA_CAT = {
     "BLOCKCHAIN": "Curadores", "CRYPTO": "Curadores", "GEOPOLITICA": "Curadores",
     "LEGAL": "Curadores", "MASTERCLASS": "Curadores", "BOOKSIGN": "Curadores",
     "FASHION": "Curadores", "CONSUMO": "Curadores", "MUSICSPACE": "Curadores",
-    "SIDEEVENTS": "Curadores", "IMMERSIVETALK": "Curadores", "IMMERSIVE": "Curadores",
+    "SIDEEVENTS": "Curadores", "IMMERSIVE": "Curadores",
 
+    # Patrocinadores Privados
     "APEXBRASIL": "Patrocinadores Privados", "APEX": "Patrocinadores Privados",
     "FNT": "Patrocinadores Privados", "FIESP": "Patrocinadores Privados",
     "FEBRABAN": "Patrocinadores Privados", "EINSTEIN": "Patrocinadores Privados",
     "GWM": "Patrocinadores Privados", "REDEAMERICAS": "Patrocinadores Privados",
     "CATERPILLAR": "Patrocinadores Privados",
 
+    # Esferas Públicas
     "PREFEITURA": "Esferas Públicas", "GOVERNO": "Esferas Públicas", "PACAEMBU": "Esferas Públicas",
 
+    # Expositores
     "MOTOROLA": "Expositores", "CMRSURGICAL": "Expositores", "EMBARCADERO": "Expositores",
     "SOUTECH": "Expositores", "FUTUREMEDIA": "Expositores", "BASF": "Expositores",
     "PD7": "Expositores", "SUZANO": "Expositores", "ORACLE": "Expositores",
@@ -52,6 +59,7 @@ CORTESIA_CAT = {
     "INGOO": "Expositores", "PHIZ": "Expositores", "WEG": "Expositores",
     "INSIDER": "Expositores",
 
+    # Parceiros de Mídia
     "GLOBO": "Parceiros de Mídia", "EXAME": "Parceiros de Mídia",
     "LINKEDIN": "Parceiros de Mídia", "RECORD": "Parceiros de Mídia",
     "OXYGEN": "Parceiros de Mídia", "ALADAS": "Parceiros de Mídia",
@@ -62,25 +70,32 @@ CORTESIA_CAT = {
     "BOSSA": "Parceiros de Mídia", "FELICIDADE": "Parceiros de Mídia",
     "BROADCAST": "Parceiros de Mídia",
 
+    # Parceiro genérico
     "ANGAMARCAS": "Parceiro", "ANGA": "Parceiro", "MARINHA": "Parceiro",
 
+    # Experiência
     "LEDPULSE": "Experiência", "EXOESQUELETO": "Experiência",
 
+    # FAAP
     "FAAP": "FAAP",
+
+    # Estadão
     "ESTADAO": "Estadão",
 
+    # Open Innovation
     "INVESTIDOR": "Open Innovation", "HUBS": "Open Innovation",
     "STARTUP": "Open Innovation", "OPENINNOVATION": "Open Innovation",
 
+    # Rouanet
     "SECMUNICIPAL": "Rouanet", "SECESTAD": "Rouanet",
     "PROJETOSSOCIAIS": "Rouanet", "ROUANET": "Rouanet",
 
+    # Universidades / Estratégicos
     "ABF": "Universidades / Estratégicos",
     "ABEEOLICA": "Universidades / Estratégicos", "ABRACEEL": "Universidades / Estratégicos",
     "ABSOLAR": "Universidades / Estratégicos", "BRXR": "Universidades / Estratégicos",
     "B2MAMY": "Universidades / Estratégicos", "CEBDS": "Universidades / Estratégicos",
-    "CEBC": "Universidades / Estratégicos",
-    "CENTROEMPRESARIAL": "Universidades / Estratégicos",
+    "CEBC": "Universidades / Estratégicos", "CENTROEMPRESARIAL": "Universidades / Estratégicos",
     "CAMARAARABE": "Universidades / Estratégicos", "DCSET": "Universidades / Estratégicos",
     "ECHOS": "Universidades / Estratégicos", "INFINITEFOUNDRY": "Universidades / Estratégicos",
     "ICMC": "Universidades / Estratégicos", "ISGAME": "Universidades / Estratégicos",
@@ -89,8 +104,8 @@ CORTESIA_CAT = {
     "SERMAIS": "Universidades / Estratégicos", "TANTEMPOS": "Universidades / Estratégicos",
     "ESEG": "Universidades / Estratégicos", "COEFICIENTE": "Universidades / Estratégicos",
     "ADRIANAMORAES": "Universidades / Estratégicos", "GLOBALECOSSYSTEM": "Universidades / Estratégicos",
-    "AREAINTER": "Área Internacional", "AREAINTERNACIONAL": "Área Internacional",
 
+    # Embaixadores
     "CAROLDOSTAL": "Embaixadores", "LUCIANOSANTOS": "Embaixadores",
     "MARCELNOBRE": "Embaixadores", "JANDARACI": "Embaixadores",
     "CAMILOBARROS": "Embaixadores", "RENATOGRAU": "Embaixadores",
@@ -99,35 +114,35 @@ CORTESIA_CAT = {
     "AMANDAGRACIANO": "Embaixadores", "CAMILAFARANI": "Embaixadores",
     "VANESSAMATHIAS": "Embaixadores",
 
-    "LIRIA": "Área Internacional",
-    "CONVIDADO": "Outros (Gratuitos)", "VIP": "Outros (Gratuitos)",
-    "PALESTRANTE": "Palestrantes",
+    # Área Internacional
+    "LIRIA": "Área Internacional", "AREAINTER": "Área Internacional",
+    "AREAINTERNACIONAL": "Área Internacional",
 }
 
 CORTESIA_TOTAL = {
-    "Patrocinadores Privados":      2000,
-    "Esferas Públicas":             3000,
-    "Expositores":                  1000,
-    "Parceiros de Mídia":            500,
-    "Parceiro":                      220,
-    "Experiência":                    20,
+    "Palestrantes":                  540,
     "Curadores":                    2650,
     "FAAP":                         4000,
-    "Estadão":                      2020,
+    "Esferas Públicas":             3000,
     "Open Innovation":              3000,
-    "Rouanet":                      1000,
+    "Estadão":                      2020,
+    "Patrocinadores Privados":      2000,
+    "Expositores":                  1000,
+    "Parceiros de Mídia":            500,
     "Universidades / Estratégicos": 3500,
+    "Rouanet":                      1000,
+    "Parceiro":                      220,
+    "Experiência":                    20,
     "Embaixadores":                    0,
     "Área Internacional":             50,
-    "Palestrantes":                  540,
     "Outros (Gratuitos)":              0,
 }
 
 CORTESIA_ORDER = [
-    "Curadores", "FAAP", "Esferas Públicas", "Open Innovation",
+    "Palestrantes", "Curadores", "FAAP", "Esferas Públicas", "Open Innovation",
     "Estadão", "Patrocinadores Privados", "Expositores",
     "Parceiros de Mídia", "Universidades / Estratégicos",
-    "Rouanet", "Parceiro", "Experiência", "Palestrantes",
+    "Rouanet", "Parceiro", "Experiência",
     "Embaixadores", "Área Internacional", "Outros (Gratuitos)",
 ]
 
@@ -137,7 +152,6 @@ CORTESIA_COLORS = [
     "#f97316","#60a5fa","#e879f9","#a3e635","#64748b","#94a3b8",
 ]
 
-# Palavras-chave para classificar cargo como C-level/Diretoria
 CLEVEL_KW = [
     "CEO","CFO","COO","CTO","CMO","CISO","CRO","CDO","CSO","CPO","CHRO",
     "DIRETOR","DIRETORA","PRESIDENT","VP ","VICE-PRESI","VICE PRESI",
@@ -160,12 +174,20 @@ def extract_pct(discount_str):
     return float(m.group(1)) if m else 0.0
 
 
-def classify_cortesia(cupom_pai):
+def classify_cortesia(cupom_pai, ticket_name=""):
+    """Classifica cortesia — palestrante tem prioridade máxima."""
+    combined = f"{cupom_pai or ''} {ticket_name or ''}".upper()
+    combined_clean = re.sub(r'[\s\-_]', '', combined)
+
+    # Palestrante: prioridade máxima
+    if "PALESTR" in combined_clean:
+        return "Palestrantes"
+
     if not cupom_pai:
         return None
-    upper = cupom_pai.upper().replace(" ", "").replace("-", "").replace("_", "")
+    upper = re.sub(r'[\s\-_]', '', cupom_pai.upper())
     for kw, cat in CORTESIA_CAT.items():
-        kw_clean = kw.upper().replace(" ", "").replace("-", "").replace("_", "")
+        kw_clean = re.sub(r'[\s\-_]', '', kw.upper())
         if kw_clean in upper:
             return cat
     return None
@@ -199,14 +221,15 @@ def get_participants(event_id):
         if not data.get("pagination", {}).get("has_next", False):
             break
         page += 1
+        time.sleep(0.5)
     return participants
 
 
-def get_all_orders():
+def get_orders(event_id):
     orders = []
     page = 1
     while True:
-        url = f"https://api.sympla.com.br/public/v3/events/{EVENT_ID}/orders"
+        url = f"https://api.sympla.com.br/public/v3/events/{event_id}/orders"
         r = requests.get(url, headers={"s-token": TOKEN}, params={"page_size": 200, "page": page})
         data = r.json()
         items = data.get("data", [])
@@ -216,6 +239,7 @@ def get_all_orders():
         if not data.get("pagination", {}).get("has_next", False):
             break
         page += 1
+        time.sleep(0.5)
     return orders
 
 
@@ -227,7 +251,7 @@ def classify_cupom_vendas(discount_str):
     return "Orgânico"
 
 
-def process(participants, orders):
+def process(all_participants, all_orders):
     by_day = {}
     by_origin = {c: {"t": 0, "c": 0, "p": 0, "r": 0} for c in CUPONS}
     total = {"t": 0, "c": 0, "p": 0}
@@ -236,7 +260,7 @@ def process(participants, orders):
     total_cort = 0
 
     approved_orders = set()
-    for p in participants:
+    for p in all_participants:
         created = p.get("order_date", "") or ""
         try:
             dt = datetime.strptime(created[:19], "%Y-%m-%d %H:%M:%S").replace(tzinfo=BRT)
@@ -246,16 +270,22 @@ def process(participants, orders):
 
         discount_str = p.get("order_discount", "") or ""
         valor = float(p.get("ticket_sale_price", 0) or 0)
+        ticket_name = p.get("ticket_name", "") or ""
         order_id = p.get("order_id", "")
         approved_orders.add(order_id)
         cupom_pai = extract_cupom_pai(discount_str)
         pct = extract_pct(discount_str)
 
-        if valor == 0 or pct == 100.0:
+        # Gratuito = valor 0 ou 100% desconto ou ticket_name com Cortesia
+        is_free = (valor == 0 or pct == 100.0 or
+                   "cortesia" in ticket_name.lower() or
+                   "convite" in ticket_name.lower())
+
+        if is_free:
             total_cort += 1
-            if cupom_pai:
-                cat = classify_cortesia(cupom_pai) or "Outros (Gratuitos)"
-                cortesias[cat][cupom_pai] += 1
+            cat = classify_cortesia(cupom_pai, ticket_name) or "Outros (Gratuitos)"
+            key = cupom_pai or ticket_name or "Sem código"
+            cortesias[cat][key] += 1
             continue
 
         cupom_vendas = classify_cupom_vendas(discount_str)
@@ -280,7 +310,7 @@ def process(participants, orders):
         total["t"] += 1
         total["c"] += 1
 
-    for o in orders:
+    for o in all_orders:
         status = o.get("status", "") or o.get("order_status", "")
         order_id = o.get("id", "") or o.get("order_id", "")
         if status == "A" or str(order_id) in approved_orders or order_id in approved_orders:
@@ -309,9 +339,9 @@ def process(participants, orders):
     return by_day, by_origin, total, dict(cortesias), dict(parceiros), total_cort
 
 
-def process_convite(participants):
-    """Processa participantes do Pop Tech com cupom Convite para análise de perfil."""
-    convite = [p for p in participants
+def process_convite(all_participants):
+    """Participantes com cupom 'Convite' em qualquer dos dois eventos."""
+    convite = [p for p in all_participants
                if "convite" in (p.get("order_discount") or "").lower()
                or "convite" in (p.get("ticket_name") or "").lower()]
 
@@ -324,18 +354,19 @@ def process_convite(participants):
     clevel_count = 0
 
     for p in convite:
-        empresa = get_form_field(p, "Empresa/Instituição") or get_form_field(p, "empresa") or "Não informado"
-        cargo   = get_form_field(p, "Ocupação") or get_form_field(p, "cargo") or "Não informado"
+        empresa = get_form_field(p, "Empresa/Instituição") or "Não informado"
+        cargo   = get_form_field(p, "Ocupação") or "Não informado"
         cidade  = get_form_field(p, "Cidade/Estado") or "Não informado"
         faixa   = get_form_field(p, "Faixa Etária") or "Não informado"
         genero  = get_form_field(p, "Gênero") or "Não informado"
 
-        if empresa: empresas[empresa] += 1
-        if cargo:   cargos[cargo] += 1
-        if cidade:  cidades[cidade] += 1
-        if faixa:   faixas[faixa] += 1
-        if genero:  generos[genero] += 1
-        if is_clevel(cargo): clevel_count += 1
+        empresas[empresa] += 1
+        cargos[cargo] += 1
+        cidades[cidade] += 1
+        faixas[faixa] += 1
+        generos[genero] += 1
+        if is_clevel(cargo):
+            clevel_count += 1
 
     return {
         "total": total,
@@ -414,27 +445,39 @@ def generate_html(by_day, by_origin, total, cortesias, parceiros, total_cort, co
 
 
 if __name__ == "__main__":
-    print("Buscando participantes SPIW...")
-    participants = get_participants(EVENT_ID)
-    print(f"Aprovados SPIW: {len(participants)}")
+    all_participants = []
+    all_orders = []
 
-    print("Buscando participantes Pop Tech...")
-    participants_pt = get_participants(EVENT_POPTECH_ID)
-    print(f"Aprovados Pop Tech: {len(participants_pt)}")
+    for eid in EVENT_IDS:
+        print(f"Buscando participantes evento {eid}...")
+        p = get_participants(eid)
+        print(f"  → {len(p)} participantes")
+        all_participants.extend(p)
 
-    print("Buscando pedidos...")
-    orders = get_all_orders()
-    print(f"Total pedidos: {len(orders)}")
+        print(f"Buscando pedidos evento {eid}...")
+        o = get_orders(eid)
+        print(f"  → {len(o)} pedidos")
+        all_orders.extend(o)
 
-    by_day, by_origin, total, cortesias, parceiros, total_cort = process(participants, orders)
-    convite_data = process_convite(participants_pt)
+    print(f"\nTotal combinado: {len(all_participants)} participantes, {len(all_orders)} pedidos")
+
+    by_day, by_origin, total, cortesias, parceiros, total_cort = process(all_participants, all_orders)
+    convite_data = process_convite(all_participants)
 
     total_cort_n = sum(sum(c.values()) for c in cortesias.values())
-    total_parc = sum(v["count"] for v in parceiros.values())
-    print(f"Vendas: {total['t']} | Cortesias: {total_cort_n} | Parceiros desconto: {total_parc}")
-    print(f"Convite MIT (Pop Tech): {convite_data['total']} inscritos | C-level: {convite_data['clevel_pct']}%")
+    total_parc   = sum(v["count"] for v in parceiros.values())
+    print(f"Vendas: {total['t']} | Cortesias: {total_cort_n} | Parceiros: {total_parc}")
+    print(f"Convite: {convite_data['total']} | C-level: {convite_data['clevel_pct']}%")
+
+    print("\n=== CORTESIAS POR CATEGORIA ===")
+    for cat, cupons in cortesias.items():
+        print(f"  {cat}: {sum(cupons.values())} → {sorted(cupons.items(), key=lambda x: -x[1])[:5]}")
+
+    print("\n=== PARCEIROS COM DESCONTO ===")
+    for cupom, v in sorted(parceiros.items(), key=lambda x: -x[1]["count"]):
+        print(f"  {cupom}: {v['count']}x @ {v['pct']}% off")
 
     html = generate_html(by_day, by_origin, total, cortesias, parceiros, total_cort, convite_data)
     with open("index.html", "w", encoding="utf-8") as f:
         f.write(html)
-    print("index.html gerado com sucesso!")
+    print("\nindex.html gerado com sucesso!")
