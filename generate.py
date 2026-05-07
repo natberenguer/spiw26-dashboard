@@ -105,6 +105,7 @@ CORTESIA_CAT = {
     # Open Innovation
     "INVESTIDOR": "Open Innovation", "HUBS": "Open Innovation",
     "STARTUP": "Open Innovation", "OPENINNOVATION": "Open Innovation",
+    "OISPIW": "Open Innovation", "OI ": "Open Innovation",
 
     # Rouanet
     "SECMUNICIPAL": "Rouanet", "SECESTAD": "Rouanet",
@@ -190,25 +191,22 @@ CLEVEL_KW = [
 
 # Mapeamento de cupom → nome da subcampanha
 CAMPANHA_MAP = {
-    "CONVITE":        "Campanha MIT 1",
-    "CAMPANHAMT":     "Campanha MIT Redes",
-    "CAMPANHA MIT":   "Campanha MIT Redes",
-    "CONVIDADOSMIT":  "Campanha MIT Emmkt",
-    "CONVIDADOS MIT": "Campanha MIT Emmkt",
-    "CAMPANHAENERGIA":"Campanha Energia",
-    "CAMPANHA ENERGIA":"Campanha Energia",
-    "CAMPANHAESPORTE":"Campanha Esporte",
-    "CAMPANHA ESPORTE":"Campanha Esporte",
+    "CONVITE":         "Campanha MIT 1",
+    "CAMPANHAMT":      "Campanha MIT Redes",
+    "CONVIDADOSMIT":   "Campanha MIT Emmkt",
+    "CONVIDADOS MIT":  "Campanha MIT Emmkt",
+    "CAMPANHAENERGIA": "Campanha Energia",
+    "CAMPANHAESPORTE": "Campanha Esporte",
 }
 
 def get_campanha_sub(cupom_pai):
     """Retorna subcategoria de campanha para um cupom, ou None."""
     if not cupom_pai:
         return None
-    upper = cupom_pai.upper().replace(" ","").replace("-","").replace("_","")
+    upper = re.sub(r"[\s\-_]", "", cupom_pai.upper())
     for k, v in CAMPANHA_MAP.items():
-        kc = k.upper().replace(" ","").replace("-","").replace("_","")
-        if kc == upper:
+        kc = re.sub(r"[\s\-_]", "", k.upper())
+        if kc in upper or upper == kc:
             return v
     return None
 
@@ -232,13 +230,26 @@ def classify_cortesia(cupom_pai, ticket_name=""):
     combined = f"{cupom_pai or ''} {ticket_name or ''}".upper()
     combined_clean = re.sub(r'[\s\-_]', '', combined)
 
-    # Palestrante: prioridade máxima (inclui typo "palestrantre")
-    if "PALESTR" in combined_clean or "PALESTRANTRE" in combined_clean:
+    # Palestrante: prioridade máxima
+    if "PALESTR" in combined_clean:
         return "Palestrantes"
+
+    # ticket_name direto para FAAP
+    tn = re.sub(r'[\s\-_]', '', (ticket_name or "").upper())
+    if "CORTESIAFAAP" in tn or "PASSAPORTECORTESIAFAAP" in tn:
+        return "FAAP"
+    # ticket_name direto para Estadão
+    if "CORTESIAASSINANTE" in tn or "CORTESIAESTADAO" in tn or "PASSAPORTECORTESIAASSINANTE" in tn:
+        return "Estadão"
 
     if not cupom_pai:
         return None
     upper = re.sub(r'[\s\-_]', '', cupom_pai.upper())
+    # Campanhas têm prioridade antes de Curadores
+    campanha_keys = ["CONVITE","CAMPANHAMT","CONVIDADOSMIT","CAMPANHAENERGIA","CAMPANHAESPORTE"]
+    for ck in campanha_keys:
+        if ck in upper:
+            return "Campanhas"
     for kw, cat in CORTESIA_CAT.items():
         kw_clean = re.sub(r'[\s\-_]', '', kw.upper())
         if kw_clean in upper:
