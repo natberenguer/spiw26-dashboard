@@ -387,6 +387,9 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
     </div>
     <div class="sec">Top Cidades</div>
     <div id="convCidades"></div>
+
+    <div class="sec" style="margin-top:32px;">Categorias</div>
+    <div id="campanhasDropdown"></div>
   </div>
 </div>
 
@@ -565,6 +568,32 @@ function convBadges(list, containerId) {
 convBar(CONVITE.top_empresas, 'convEmpresas', 'var(--cyan)');
 convBar(CONVITE.top_cargos, 'convCargos', 'var(--purple)');
 convBar(CONVITE.top_cidades, 'convCidades', 'var(--amber)');
+
+// Campanhas dropdown (renomeado para Categorias)
+const camp = CONVITE.campanhas || { total: 0, subcategorias: [] };
+const campSubs = camp.subcategorias || [];
+const campSubsHtml = campSubs.length
+  ? campSubs.map(s => `<div class="cort-cupom-row"><span class="cort-cupom-name">${s.nome}</span><span class="cort-cupom-count">${s.utilizados}</span></div>`).join('')
+  : '<div class="cort-empty">Nenhum cupom utilizado ainda</div>';
+document.getElementById('campanhasDropdown').innerHTML = `
+  <div class="cort-cat" id="cort-campanhas">
+    <div class="cort-cat-header" onclick="document.getElementById('cort-campanhas').classList.toggle('open')">
+      <div class="cort-color-bar" style="background:#9b5cf6"></div>
+      <div class="cort-cat-info">
+        <div class="cort-cat-name">Categorias</div>
+        <div class="cort-progress-wrap">
+          <div class="cort-progress-track"><div class="cort-progress-fill" style="width:0%;background:#9b5cf6"></div></div>
+          <div class="cort-pct">—</div>
+        </div>
+      </div>
+      <div class="cort-nums">
+        <div class="cort-used" style="color:#9b5cf6">${camp.total}</div>
+        <div class="cort-avail">utilizados</div>
+      </div>
+      <div class="cort-arrow">›</div>
+    </div>
+    <div class="cort-cupons">${campSubsHtml}</div>
+  </div>`;
 
 // Pizza gênero
 const genLabels = CONVITE.generos.map(g => g.nome);
