@@ -40,12 +40,10 @@ CORTESIA_CAT = {
     "LEGAL": "Curadores", "MASTERCLASS": "Curadores", "BOOKSIGN": "Curadores",
     "FASHION": "Curadores", "CONSUMO": "Curadores", "MUSICSPACE": "Curadores",
     "SIDEEVENTS": "Curadores", "IMMERSIVE": "Curadores",
-    "HUMANARE": "Curadores", "AREAINTERNACIONAL": "Curadores", "ÁREA INTERNACIONAL": "Curadores",
-    "AIINACTION": "Curadores", "A.I IN ACTION": "Curadores", "AINACTION": "Curadores",
-    "CREATOR": "Curadores", "ENERGYHUB": "Curadores", "ENERGY HUB": "Curadores",
-    "TILT": "Curadores", "MIT": "Curadores",
-    "TRANSICAOENERGETICA": "Curadores", "TRANSIÇÃO ENERGETICA": "Curadores",
-    "PALAVRA": "Curadores", "VCSQUARE": "Curadores", "VC SQUARE": "Curadores",
+    "HUMANARE": "Curadores", "AIINACTION": "Curadores", "AINACTION": "Curadores",
+    "TRANSICAOENERGETICA": "Curadores", "TRANSICAOENERGETICA": "Curadores",
+    "PALAVRA": "Curadores", "VCSQUARE": "Curadores",
+    "MARIAHOMEM": "Palestrantes", "MARIA HOMEM": "Palestrantes",
 
     # Patrocinadores Privados
     "APEXBRASIL": "Patrocinadores Privados", "APEX": "Patrocinadores Privados",
@@ -83,9 +81,14 @@ CORTESIA_CAT = {
     "BOOST": "Parceiros de Mídia", "BOSSAWOMEN": "Parceiros de Mídia",
     "BOSSA": "Parceiros de Mídia", "FELICIDADE": "Parceiros de Mídia",
     "BROADCAST": "Parceiros de Mídia",
+    "JCDECAUX": "Parceiros de Mídia", "RADIONOVELO": "Parceiros de Mídia",
 
     # Parceiro genérico
     "ANGAMARCAS": "Parceiro", "ANGA": "Parceiro", "MARINHA": "Parceiro",
+    "CASPERLIBERO": "Parceiro", "CASPER LIBERO": "Parceiro", "CASPER": "Parceiro",
+    "INSTITUTOTERRA": "Parceiro", "INSTITUTO TERRA": "Parceiro",
+    "ODARA": "Parceiro",
+    "ITAMARATY": "Parceiro",
 
     # Experiência
     "LEDPULSE": "Experiência", "EXOESQUELETO": "Experiência",
@@ -101,11 +104,15 @@ CORTESIA_CAT = {
     "ESTADAO": "Estadão", "CLUBEESTADAO": "Estadão", "CLUBE ESTADAO": "Estadão",
     "CORTESIAASSINANTE": "Estadão", "CORTESIA ASSINANTE": "Estadão",
     "ASSINANTEESTADAO": "Estadão",
+    "CONSELHOESTADAO": "Estadão", "CONSELHO ESTADAO": "Estadão",
+    "DIGITALESTADAO": "Estadão", "DIGITAL ESTADAO": "Estadão",
+    "CONSELHOACIONISTAS": "Estadão", "CONSELHO E ACIONISTAS": "Estadão",
+    "TESTEESTADAO": "Estadão", "TESTE ESTADAO": "Estadão",
 
     # Open Innovation
     "INVESTIDOR": "Open Innovation", "HUBS": "Open Innovation",
     "STARTUP": "Open Innovation", "OPENINNOVATION": "Open Innovation",
-    "OISPIW": "Open Innovation", "OI ": "Open Innovation",
+    "OISPIW": "Open Innovation", "OISPIW2026": "Open Innovation",
 
     # Rouanet
     "SECMUNICIPAL": "Rouanet", "SECESTAD": "Rouanet",
@@ -125,6 +132,13 @@ CORTESIA_CAT = {
     "SERMAIS": "Universidades / Estratégicos", "TANTEMPOS": "Universidades / Estratégicos",
     "ESEG": "Universidades / Estratégicos", "COEFICIENTE": "Universidades / Estratégicos",
     "ADRIANAMORAES": "Universidades / Estratégicos", "GLOBALECOSSYSTEM": "Universidades / Estratégicos",
+    "MACKENZIE": "Universidades / Estratégicos",
+    "UNIVERSIDADES": "Universidades / Estratégicos",
+    "FGV": "Universidades / Estratégicos",
+    "EESPM": "Universidades / Estratégicos",
+    "PRPIUSP": "Universidades / Estratégicos", "PRPI USP": "Universidades / Estratégicos", "PRPI": "Universidades / Estratégicos",
+    "ESCOLAESTADUAL": "Universidades / Estratégicos", "ESCOLA ESTADUAL": "Universidades / Estratégicos",
+    "UNESP": "Universidades / Estratégicos",
 
     # Embaixadores
     "CAROLDOSTAL": "Embaixadores", "LUCIANOSANTOS": "Embaixadores",
@@ -138,6 +152,10 @@ CORTESIA_CAT = {
     # Área Internacional
     "LIRIA": "Área Internacional", "AREAINTER": "Área Internacional",
     "AREAINTERNACIONAL": "Área Internacional",
+
+    # Lounges
+    "LOUNGETODASGROUP": "Lounges", "LOUNGE TODAS": "Lounges", "TODASGROUP": "Lounges",
+    "LOUNGEFAAP": "Lounges", "LOUNGE FAAP": "Lounges",
 
     # Campanhas
     "CAMPANHamit": "Campanha MIT", "CAMPANHA MIT": "Campanha MIT",
@@ -162,15 +180,17 @@ CORTESIA_TOTAL = {
     "Embaixadores":                    0,
     "Área Internacional":             50,
     "Campanhas":                        0,
+    "Lounges":                           0,
     "Outros (Gratuitos)":              0,
 }
 
 CORTESIA_ORDER = [
+    "Campanhas",
     "Palestrantes", "Curadores", "FAAP", "Esferas Públicas", "Open Innovation",
     "Estadão", "Patrocinadores Privados", "Expositores",
     "Parceiros de Mídia", "Universidades / Estratégicos",
     "Rouanet", "Parceiro", "Experiência",
-    "Embaixadores", "Área Internacional", "Campanhas",
+    "Embaixadores", "Área Internacional", "Lounges",
     "Outros (Gratuitos)",
 ]
 
@@ -178,7 +198,7 @@ CORTESIA_COLORS = [
     "#00d9ff","#9b5cf6","#4d9fff","#ff8c42","#ff4dab",
     "#00ff9d","#ffd700","#ff6b6b","#c084fc","#34d399",
     "#f97316","#60a5fa","#e879f9","#a3e635","#64748b","#94a3b8",
-    "#06b6d4","#8b5cf6","#10b981",
+    "#06b6d4","#8b5cf6","#10b981","#f43f5e",
 ]
 
 CLEVEL_KW = [
@@ -194,7 +214,6 @@ CAMPANHA_MAP = {
     "CONVITE":         "Campanha MIT 1",
     "CAMPANHAMT":      "Campanha MIT Redes",
     "CONVIDADOSMIT":   "Campanha MIT Emmkt",
-    "CONVIDADOS MIT":  "Campanha MIT Emmkt",
     "CAMPANHAENERGIA": "Campanha Energia",
     "CAMPANHAESPORTE": "Campanha Esporte",
 }
@@ -246,7 +265,7 @@ def classify_cortesia(cupom_pai, ticket_name=""):
         return None
     upper = re.sub(r'[\s\-_]', '', cupom_pai.upper())
     # Campanhas têm prioridade antes de Curadores
-    campanha_keys = ["CONVITE","CAMPANHAMT","CONVIDADOSMIT","CAMPANHAENERGIA","CAMPANHAESPORTE"]
+    campanha_keys = ["CONVITE","CAMPANHAMT","CONVIDADOSMIT","CAMPANHAENERGIA","CAMPANHAESPORTE","CAMPANHA"]
     for ck in campanha_keys:
         if ck in upper:
             return "Campanhas"
