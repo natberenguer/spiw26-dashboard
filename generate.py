@@ -40,9 +40,14 @@ CORTESIA_CAT = {
     "LEGAL": "Curadores", "MASTERCLASS": "Curadores", "BOOKSIGN": "Curadores",
     "FASHION": "Curadores", "CONSUMO": "Curadores", "MUSICSPACE": "Curadores",
     "SIDEEVENTS": "Curadores", "IMMERSIVE": "Curadores",
-    "HUMANARE": "Curadores", "AIINACTION": "Curadores", "AINACTION": "Curadores",
-    "TRANSICAOENERGETICA": "Curadores", "TRANSICAOENERGETICA": "Curadores",
+    "HUMANARE": "Curadores",
+    "AIINACTION": "Curadores", "AINACTION": "Curadores", "A.I IN ACTION": "Curadores", "AI IN ACTION": "Curadores",
+    "TRANSICAOENERGETICA": "Curadores",
     "PALAVRA": "Curadores", "VCSQUARE": "Curadores",
+    "VAREJO360": "Curadores", "VAREJO 360": "Curadores", "VAREJO": "Curadores",
+    "ENERGYHUB": "Curadores", "ENERGY HUB": "Curadores",
+    "MIT": "Curadores",
+    "CREATOR": "Curadores", "TILT": "Curadores",
     "MARIAHOMEM": "Palestrantes", "MARIA HOMEM": "Palestrantes",
 
     # Patrocinadores Privados
@@ -51,9 +56,7 @@ CORTESIA_CAT = {
     "FEBRABAN": "Patrocinadores Privados", "EINSTEIN": "Patrocinadores Privados",
     "GWM": "Patrocinadores Privados", "REDEAMERICAS": "Patrocinadores Privados",
     "CATERPILLAR": "Patrocinadores Privados",
-    "GOVSP": "Patrocinadores Privados", "GOV SP": "Patrocinadores Privados",
     "VALE": "Patrocinadores Privados",
-    "SPNEGOCIOS": "Patrocinadores Privados", "SP NEGOCIOS": "Patrocinadores Privados", "SPNEG": "Patrocinadores Privados",
     "CONSELHOESTADAO": "Patrocinadores Privados", "CONSELHO ESTADAO": "Patrocinadores Privados",
     "INOVABRA": "Patrocinadores Privados",
     "STELLANTIS": "Patrocinadores Privados",
@@ -61,7 +64,9 @@ CORTESIA_CAT = {
     "COCACOLA": "Patrocinadores Privados", "COCA-COLA": "Patrocinadores Privados", "INSTITUTOCOCACOLA": "Patrocinadores Privados",
 
     # Esferas Públicas
-    "PREFEITURA": "Esferas Públicas", "GOVERNO": "Esferas Públicas", "PACAEMBU": "Esferas Públicas",
+    "PREFEITURA": "Esferas Públicas", "GOVERNO": "Esferas Públicas",
+    "GOVSP": "Esferas Públicas", "GOV SP": "Esferas Públicas",
+    "SPNEGOCIOS": "Esferas Públicas", "SP NEGOCIOS": "Esferas Públicas", "SPNEG": "Esferas Públicas",
 
     # Expositores
     "MOTOROLA": "Expositores", "CMRSURGICAL": "Expositores", "EMBARCADERO": "Expositores",
@@ -85,6 +90,7 @@ CORTESIA_CAT = {
 
     # Parceiro genérico
     "ANGAMARCAS": "Parceiro", "ANGA": "Parceiro", "MARINHA": "Parceiro",
+    "PACAEMBU": "Parceiro",
     "CASPERLIBERO": "Parceiro", "CASPER LIBERO": "Parceiro", "CASPER": "Parceiro",
     "INSTITUTOTERRA": "Parceiro", "INSTITUTO TERRA": "Parceiro",
     "ODARA": "Parceiro",
@@ -97,7 +103,6 @@ CORTESIA_CAT = {
     "FAAP": "FAAP", "CONVIDADOFAAP": "FAAP", "CONVIDADO FAAP": "FAAP",
     "AMIGOSFAAP": "FAAP", "AMIGOS DA FAAP": "FAAP", "AMIGOSDAFAAP": "FAAP",
     "BUSINESSFAAP": "FAAP", "BUSINESS FAAP": "FAAP",
-    "BUSINESSAREA": "FAAP", "BUSINESS AREA": "FAAP",
     "CORTESIAFAAP": "FAAP", "PASSAPORTE CORTESIA FAAP": "FAAP",
 
     # Estadão
@@ -150,12 +155,16 @@ CORTESIA_CAT = {
     "VANESSAMATHIAS": "Embaixadores",
 
     # Área Internacional
-    "LIRIA": "Área Internacional", "AREAINTER": "Área Internacional",
-    "AREAINTERNACIONAL": "Área Internacional",
+    "LIRIA": "Área Internacional",
+    "AREAINTER": "Área Internacional", "AREAINTERNACIONAL": "Área Internacional",
+    "ÁREAINTERNACIONAL": "Área Internacional", "ÁREA INTERNACIONAL": "Área Internacional",
+    "AREA INTERNACIONAL": "Área Internacional",
 
     # Lounges
     "LOUNGETODASGROUP": "Lounges", "LOUNGE TODAS": "Lounges", "TODASGROUP": "Lounges",
     "LOUNGEFAAP": "Lounges", "LOUNGE FAAP": "Lounges",
+    "BUSINESSAREAFAAP": "Lounges", "BUSINESS AREA FAAP": "Lounges",
+    "BUSINESSAREA": "Lounges", "BUSINESS AREA": "Lounges",
 
     # Campanhas
     "CAMPANHamit": "Campanha MIT", "CAMPANHA MIT": "Campanha MIT",
@@ -185,7 +194,6 @@ CORTESIA_TOTAL = {
 }
 
 CORTESIA_ORDER = [
-    "Campanhas",
     "Palestrantes", "Curadores", "FAAP", "Esferas Públicas", "Open Innovation",
     "Estadão", "Patrocinadores Privados", "Expositores",
     "Parceiros de Mídia", "Universidades / Estratégicos",
@@ -193,6 +201,8 @@ CORTESIA_ORDER = [
     "Embaixadores", "Área Internacional", "Lounges",
     "Outros (Gratuitos)",
 ]
+# Campanhas é exibida separadamente na aba Perfil MIT
+CAMPANHAS_CAT_NAME = "Campanhas"
 
 CORTESIA_COLORS = [
     "#00d9ff","#9b5cf6","#4d9fff","#ff8c42","#ff4dab",
@@ -245,7 +255,7 @@ def extract_pct(discount_str):
 
 
 def classify_cortesia(cupom_pai, ticket_name=""):
-    """Classifica cortesia — palestrante tem prioridade máxima."""
+    """Classifica cortesia — match exato tem prioridade sobre substring."""
     combined = f"{cupom_pai or ''} {ticket_name or ''}".upper()
     combined_clean = re.sub(r'[\s\-_]', '', combined)
 
@@ -253,24 +263,34 @@ def classify_cortesia(cupom_pai, ticket_name=""):
     if "PALESTR" in combined_clean:
         return "Palestrantes"
 
-    # ticket_name direto para FAAP
+    # ticket_name direto para FAAP/Estadão
     tn = re.sub(r'[\s\-_]', '', (ticket_name or "").upper())
     if "CORTESIAFAAP" in tn or "PASSAPORTECORTESIAFAAP" in tn:
         return "FAAP"
-    # ticket_name direto para Estadão
     if "CORTESIAASSINANTE" in tn or "CORTESIAESTADAO" in tn or "PASSAPORTECORTESIAASSINANTE" in tn:
         return "Estadão"
 
     if not cupom_pai:
         return None
     upper = re.sub(r'[\s\-_]', '', cupom_pai.upper())
-    # Campanhas têm prioridade antes de Curadores
+
+    # Campanhas têm prioridade ABSOLUTA
     campanha_keys = ["CONVITE","CAMPANHAMT","CONVIDADOSMIT","CAMPANHAENERGIA","CAMPANHAESPORTE","CAMPANHA"]
     for ck in campanha_keys:
         if ck in upper:
             return "Campanhas"
+
+    # Match EXATO primeiro
     for kw, cat in CORTESIA_CAT.items():
         kw_clean = re.sub(r'[\s\-_]', '', kw.upper())
+        if kw_clean == upper:
+            return cat
+
+    # Match por substring (exclui keywords curtas para evitar falsos positivos)
+    for kw, cat in CORTESIA_CAT.items():
+        kw_clean = re.sub(r'[\s\-_]', '', kw.upper())
+        if len(kw_clean) < 4:
+            continue
         if kw_clean in upper:
             return cat
     return None
@@ -500,6 +520,15 @@ def generate_html(by_day, by_origin, total, cortesias, parceiros, total_cort, co
                 "cat": cat, "disponivel": disponivel,
                 "utilizados": utilizados, "pct": pct, "cupons": cupons_list,
             })
+
+    # Campanhas (exibida separadamente na aba Perfil MIT)
+    campanhas_cat = cortesias.get("Campanhas", {})
+    campanhas_total = sum(campanhas_cat.values())
+    campanhas_list = [{"nome": k, "utilizados": v} for k, v in sorted(campanhas_cat.items(), key=lambda x: -x[1])]
+    convite_data["campanhas"] = {
+        "total": campanhas_total,
+        "subcategorias": campanhas_list,
+    }
 
     parceiros_data = [
         {"cupom": k, "pct": v["pct"], "count": v["count"]}
