@@ -20,8 +20,8 @@ CUPONS = ["Orgânico", "Marktech Meta", "Marktech Google", "EBEstadao", "EmmRIW"
 COLORS = ["#00d9ff", "#9b5cf6", "#4d9fff", "#ff8c42", "#ff4dab"]
 
 CORTESIA_CAT = {
-    # Palestrantes — prioridade máxima
-    "PALESTRANTE": "Palestrantes", "PALESTR": "Palestrantes",
+    # Palestrantes — prioridade máxima (inclui typo "palestrantre")
+    "PALESTRANTE": "Palestrantes", "PALESTR": "Palestrantes", "PALESTRANTRE": "Palestrantes",
 
     # Curadores
     "SMARTCITIES": "Curadores", "INDUSTRIA": "Curadores", "REALESTATE": "Curadores",
@@ -40,6 +40,12 @@ CORTESIA_CAT = {
     "LEGAL": "Curadores", "MASTERCLASS": "Curadores", "BOOKSIGN": "Curadores",
     "FASHION": "Curadores", "CONSUMO": "Curadores", "MUSICSPACE": "Curadores",
     "SIDEEVENTS": "Curadores", "IMMERSIVE": "Curadores",
+    "HUMANARE": "Curadores", "AREAINTERNACIONAL": "Curadores", "ÁREA INTERNACIONAL": "Curadores",
+    "AIINACTION": "Curadores", "A.I IN ACTION": "Curadores", "AINACTION": "Curadores",
+    "CREATOR": "Curadores", "ENERGYHUB": "Curadores", "ENERGY HUB": "Curadores",
+    "TILT": "Curadores", "MIT": "Curadores",
+    "TRANSICAOENERGETICA": "Curadores", "TRANSIÇÃO ENERGETICA": "Curadores",
+    "PALAVRA": "Curadores", "VCSQUARE": "Curadores", "VC SQUARE": "Curadores",
 
     # Patrocinadores Privados
     "APEXBRASIL": "Patrocinadores Privados", "APEX": "Patrocinadores Privados",
@@ -47,6 +53,14 @@ CORTESIA_CAT = {
     "FEBRABAN": "Patrocinadores Privados", "EINSTEIN": "Patrocinadores Privados",
     "GWM": "Patrocinadores Privados", "REDEAMERICAS": "Patrocinadores Privados",
     "CATERPILLAR": "Patrocinadores Privados",
+    "GOVSP": "Patrocinadores Privados", "GOV SP": "Patrocinadores Privados",
+    "VALE": "Patrocinadores Privados",
+    "SPNEGOCIOS": "Patrocinadores Privados", "SP NEGOCIOS": "Patrocinadores Privados", "SPNEG": "Patrocinadores Privados",
+    "CONSELHOESTADAO": "Patrocinadores Privados", "CONSELHO ESTADAO": "Patrocinadores Privados",
+    "INOVABRA": "Patrocinadores Privados",
+    "STELLANTIS": "Patrocinadores Privados",
+    "RESECURITY": "Patrocinadores Privados",
+    "COCACOLA": "Patrocinadores Privados", "COCA-COLA": "Patrocinadores Privados", "INSTITUTOCOCACOLA": "Patrocinadores Privados",
 
     # Esferas Públicas
     "PREFEITURA": "Esferas Públicas", "GOVERNO": "Esferas Públicas", "PACAEMBU": "Esferas Públicas",
@@ -76,11 +90,17 @@ CORTESIA_CAT = {
     # Experiência
     "LEDPULSE": "Experiência", "EXOESQUELETO": "Experiência",
 
-    # FAAP
-    "FAAP": "FAAP",
+    # FAAP — todas as variações
+    "FAAP": "FAAP", "CONVIDADOFAAP": "FAAP", "CONVIDADO FAAP": "FAAP",
+    "AMIGOSFAAP": "FAAP", "AMIGOS DA FAAP": "FAAP", "AMIGOSDAFAAP": "FAAP",
+    "BUSINESSFAAP": "FAAP", "BUSINESS FAAP": "FAAP",
+    "BUSINESSAREA": "FAAP", "BUSINESS AREA": "FAAP",
+    "CORTESIAFAAP": "FAAP", "PASSAPORTE CORTESIA FAAP": "FAAP",
 
     # Estadão
-    "ESTADAO": "Estadão",
+    "ESTADAO": "Estadão", "CLUBEESTADAO": "Estadão", "CLUBE ESTADAO": "Estadão",
+    "CORTESIAASSINANTE": "Estadão", "CORTESIA ASSINANTE": "Estadão",
+    "ASSINANTEESTADAO": "Estadão",
 
     # Open Innovation
     "INVESTIDOR": "Open Innovation", "HUBS": "Open Innovation",
@@ -117,6 +137,11 @@ CORTESIA_CAT = {
     # Área Internacional
     "LIRIA": "Área Internacional", "AREAINTER": "Área Internacional",
     "AREAINTERNACIONAL": "Área Internacional",
+
+    # Campanhas
+    "CAMPANHamit": "Campanha MIT", "CAMPANHA MIT": "Campanha MIT",
+    "CAMPANHAENERGIA": "Campanha Energia", "CAMPANHA ENERGIA": "Campanha Energia",
+    "CAMPANHAESPORTE": "Campanha Esporte", "CAMPANHA ESPORTE": "Campanha Esporte",
 }
 
 CORTESIA_TOTAL = {
@@ -135,6 +160,7 @@ CORTESIA_TOTAL = {
     "Experiência":                    20,
     "Embaixadores":                    0,
     "Área Internacional":             50,
+    "Campanhas":                        0,
     "Outros (Gratuitos)":              0,
 }
 
@@ -143,13 +169,15 @@ CORTESIA_ORDER = [
     "Estadão", "Patrocinadores Privados", "Expositores",
     "Parceiros de Mídia", "Universidades / Estratégicos",
     "Rouanet", "Parceiro", "Experiência",
-    "Embaixadores", "Área Internacional", "Outros (Gratuitos)",
+    "Embaixadores", "Área Internacional", "Campanhas",
+    "Outros (Gratuitos)",
 ]
 
 CORTESIA_COLORS = [
     "#00d9ff","#9b5cf6","#4d9fff","#ff8c42","#ff4dab",
     "#00ff9d","#ffd700","#ff6b6b","#c084fc","#34d399",
     "#f97316","#60a5fa","#e879f9","#a3e635","#64748b","#94a3b8",
+    "#06b6d4","#8b5cf6","#10b981",
 ]
 
 CLEVEL_KW = [
@@ -158,6 +186,31 @@ CLEVEL_KW = [
     "SÓCIO","SOCIO","PARTNER","FOUNDER","CO-FOUNDER","COFOUND",
     "MANAGING DIRECTOR","MD ","BOARD","CONSELHEIRO","CONSELHEIRA",
 ]
+
+
+# Mapeamento de cupom → nome da subcampanha
+CAMPANHA_MAP = {
+    "CONVITE":        "Campanha MIT 1",
+    "CAMPANHAMT":     "Campanha MIT Redes",
+    "CAMPANHA MIT":   "Campanha MIT Redes",
+    "CONVIDADOSMIT":  "Campanha MIT Emmkt",
+    "CONVIDADOS MIT": "Campanha MIT Emmkt",
+    "CAMPANHAENERGIA":"Campanha Energia",
+    "CAMPANHA ENERGIA":"Campanha Energia",
+    "CAMPANHAESPORTE":"Campanha Esporte",
+    "CAMPANHA ESPORTE":"Campanha Esporte",
+}
+
+def get_campanha_sub(cupom_pai):
+    """Retorna subcategoria de campanha para um cupom, ou None."""
+    if not cupom_pai:
+        return None
+    upper = cupom_pai.upper().replace(" ","").replace("-","").replace("_","")
+    for k, v in CAMPANHA_MAP.items():
+        kc = k.upper().replace(" ","").replace("-","").replace("_","")
+        if kc == upper:
+            return v
+    return None
 
 
 def extract_cupom_pai(discount_str):
@@ -179,8 +232,8 @@ def classify_cortesia(cupom_pai, ticket_name=""):
     combined = f"{cupom_pai or ''} {ticket_name or ''}".upper()
     combined_clean = re.sub(r'[\s\-_]', '', combined)
 
-    # Palestrante: prioridade máxima
-    if "PALESTR" in combined_clean:
+    # Palestrante: prioridade máxima (inclui typo "palestrantre")
+    if "PALESTR" in combined_clean or "PALESTRANTRE" in combined_clean:
         return "Palestrantes"
 
     if not cupom_pai:
@@ -285,7 +338,12 @@ def process(all_participants, all_orders):
             total_cort += 1
             cat = classify_cortesia(cupom_pai, ticket_name) or "Outros (Gratuitos)"
             key = cupom_pai or ticket_name or "Sem código"
-            cortesias[cat][key] += 1
+            # Para campanhas, usar subcategoria como key
+            if cat == "Campanhas":
+                sub = get_campanha_sub(cupom_pai) or key
+                cortesias[cat][sub] += 1
+            else:
+                cortesias[cat][key] += 1
             continue
 
         cupom_vendas = classify_cupom_vendas(discount_str)
