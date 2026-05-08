@@ -222,7 +222,7 @@ CLEVEL_KW = [
 # Mapeamento de cupom → nome da subcampanha
 CAMPANHA_MAP = {
     "CONVITE":         "Campanha MIT 1",
-    "CAMPANHAMT":      "OPEN INNOVATION SPIW",
+    "CAMPANHAMIT":      "OPEN INNOVATION SPIW",
     "CONVIDADOSMIT":   "Campanha MIT Emmkt",
     "CAMPANHAENERGIA": "Campanha Energia",
     "CAMPANHAESPORTE": "Campanha Esporte",
@@ -275,7 +275,7 @@ def classify_cortesia(cupom_pai, ticket_name=""):
     upper = re.sub(r'[\s\-_]', '', cupom_pai.upper())
 
     # Campanhas têm prioridade ABSOLUTA
-    campanha_keys = ["CONVITE","CAMPANHAMT","CONVIDADOSMIT","CAMPANHAENERGIA","CAMPANHAESPORTE","CAMPANHA"]
+    campanha_keys = ["CONVITE","CAMPANHAMIT","CONVIDADOSMIT","CAMPANHAENERGIA","CAMPANHAESPORTE","CAMPANHA"]
     for ck in campanha_keys:
         if ck in upper:
             return "Campanhas"
