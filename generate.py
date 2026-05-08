@@ -222,7 +222,7 @@ CLEVEL_KW = [
 # Mapeamento de cupom → nome da subcampanha
 CAMPANHA_MAP = {
     "CONVITE":         "Campanha MIT 1",
-    "CAMPANHAMT":      "Campanha MIT Redes",
+    "CAMPANHAMT":      "OPEN INNOVATION SPIW",
     "CONVIDADOSMIT":   "Campanha MIT Emmkt",
     "CAMPANHAENERGIA": "Campanha Energia",
     "CAMPANHAESPORTE": "Campanha Esporte",
