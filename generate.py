@@ -310,13 +310,27 @@ def is_clevel(cargo):
     return any(kw in upper for kw in CLEVEL_KW)
 
 
+def fetch_with_retry(url, params, max_retries=5):
+    """Faz requisição com retry exponencial em caso de erro."""
+    for attempt in range(max_retries):
+        try:
+            r = requests.get(url, headers={"s-token": TOKEN}, params=params, timeout=30)
+            if r.status_code == 200:
+                return r.json()
+            print(f"  ⚠️  Status {r.status_code} (tentativa {attempt+1}/{max_retries}), aguardando...")
+        except Exception as e:
+            print(f"  ⚠️  Erro {type(e).__name__} (tentativa {attempt+1}/{max_retries}): {e}")
+        time.sleep(2 ** attempt)  # 1s, 2s, 4s, 8s, 16s
+    print(f"  ❌ Falhou após {max_retries} tentativas: {url}")
+    return {"data": [], "pagination": {"has_next": False}}
+
+
 def get_participants(event_id):
     participants = []
     page = 1
     while True:
         url = f"https://api.sympla.com.br/public/v3/events/{event_id}/participants"
-        r = requests.get(url, headers={"s-token": TOKEN}, params={"page_size": 200, "page": page})
-        data = r.json()
+        data = fetch_with_retry(url, {"page_size": 200, "page": page})
         items = data.get("data", [])
         if not items:
             break
@@ -333,8 +347,7 @@ def get_orders(event_id):
     page = 1
     while True:
         url = f"https://api.sympla.com.br/public/v3/events/{event_id}/orders"
-        r = requests.get(url, headers={"s-token": TOKEN}, params={"page_size": 200, "page": page})
-        data = r.json()
+        data = fetch_with_retry(url, {"page_size": 200, "page": page})
         items = data.get("data", [])
         if not items:
             break
